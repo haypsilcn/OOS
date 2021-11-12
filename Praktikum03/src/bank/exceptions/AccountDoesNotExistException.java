@@ -1,4 +1,4 @@
 package bank.exceptions;
 
-public class AccountDoesNotExistException {
+public class AccountDoesNotExistException extends Exception {
 }
