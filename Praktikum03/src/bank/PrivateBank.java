@@ -5,9 +5,7 @@ import bank.exceptions.AccountDoesNotExistException;
 import bank.exceptions.TransactionAlreadyExistException;
 import bank.exceptions.TransactionDoesNotExistException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PrivateBank implements Bank {
 
@@ -31,6 +29,7 @@ public class PrivateBank implements Bank {
      * each stored account
      */
     private Map<String, List<Transaction>> accountsToTransaction =  new HashMap<>();
+
 
 
     public void setName(String name) {
@@ -64,6 +63,9 @@ public class PrivateBank implements Bank {
         this.name = newName;
         this.incomingInterest = newIncomingInterest;
         this.outcomingInterest = newOutcomingInterest;
+
+        accountsToTransaction.put("am", null);
+        accountsToTransaction.put("ma", null);
     }
 
     /**
@@ -79,7 +81,8 @@ public class PrivateBank implements Bank {
      */
     @Override
     public String toString() {
-        return super.toString() + ", Name: " + name + ", Incoming Interest: " + incomingInterest + ", Outcoming Interest: " + outcomingInterest + "\n";
+        Set<String> key = accountsToTransaction.keySet();
+        return "Name: " + name + ", Incoming Interest: " + incomingInterest + ", Outcoming Interest: " + outcomingInterest + ", " + key;
     }
 
 
@@ -97,7 +100,17 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void createAccount(String account) throws AccountAlreadyExistsException {
+        //Set<String> keySet = accountsToTransaction.keySet();
+        /*for (String key : accountsToTransaction.keySet()) {
+            if (key == account)
+                throw new AccountAlreadyExistsException("Error: Account already exists!");
+        }*/
 
+        Set<String> key = accountsToTransaction.keySet();
+        if (key.equals(account))
+            throw new AccountAlreadyExistsException("Error: Account already exists!");
+        else
+            accountsToTransaction.put(account, null);
     }
 
     /**
