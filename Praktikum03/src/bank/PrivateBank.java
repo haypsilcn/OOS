@@ -5,7 +5,6 @@ import bank.exceptions.AccountDoesNotExistException;
 import bank.exceptions.TransactionAlreadyExistException;
 import bank.exceptions.TransactionDoesNotExistException;
 
-import javax.swing.*;
 import java.util.*;
 
 public class PrivateBank implements Bank {
