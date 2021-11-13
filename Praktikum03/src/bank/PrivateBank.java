@@ -29,7 +29,7 @@ public class PrivateBank implements Bank {
      * Links accounts to transactions so that 0 to N transactions can be assigned to
      * each stored account
      */
-    private Map<String, List<Transaction>> accountsToTransaction =  new HashMap<String, List<Transaction>>();
+    private final Map<String, List<Transaction>> accountsToTransactions =  new HashMap<String, List<Transaction>>();
 
 
 
@@ -65,14 +65,6 @@ public class PrivateBank implements Bank {
         this.incomingInterest = newIncomingInterest;
         this.outcomingInterest = newOutcomingInterest;
 
-        accountsToTransaction.put("", null);
-        accountsToTransaction.put("testing acc 1", List.of(
-                new Transaction("12.12.2000", "Des", 212) {
-                },
-                new Transaction("21.04.3244", "Des1", 33) {
-                }
-        ));
-        accountsToTransaction.put("testing acc 2", null);
     }
 
     /**
@@ -83,18 +75,29 @@ public class PrivateBank implements Bank {
     }
 
     /**
-     *
+     * useless and redundant
      * @return contents of all attributes
      */
     @Override
     public String toString() {
-        return "Name: " + name + ", Incoming Interest: " + incomingInterest + ", Outcoming Interest: " + outcomingInterest + ", " + accountsToTransaction.toString();
+        return "Name: " + name + "\nIncoming Interest: " + incomingInterest + "\nOutcoming Interest: " + outcomingInterest;
     }
 
+    public void printAll() {
+        System.out.println(PrivateBank.this);
+        Set<String> setKey = accountsToTransactions.keySet();
+        for (String key : setKey) {
+            System.out.print(key + " => [\n");
+            List<Transaction> valueTransaction = accountsToTransactions.get(key);
+            for (Transaction value : valueTransaction)
+                System.out.print("\t\t" + value);
+            System.out.println("]");
+        }
+    }
 
     public boolean equals(Object obj) {
         if (obj instanceof PrivateBank privateBank)
-            return (super.equals(privateBank) && incomingInterest == privateBank.incomingInterest && outcomingInterest == privateBank.outcomingInterest && accountsToTransaction.equals(privateBank.accountsToTransaction));
+            return (super.equals(privateBank) && incomingInterest == privateBank.incomingInterest && outcomingInterest == privateBank.outcomingInterest && accountsToTransactions.equals(privateBank.accountsToTransactions));
         return false;
     }
 
@@ -106,10 +109,10 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void createAccount(String account) throws AccountAlreadyExistsException {
-        if (accountsToTransaction.containsKey(account))
+        if (accountsToTransactions.containsKey(account))
             throw new AccountAlreadyExistsException("Error: Account already exists!");
         else
-            accountsToTransaction.put(account, null);
+            accountsToTransactions.put(account, null);
     }
 
     /**
@@ -122,7 +125,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void createAccount(String account, List<Transaction> transactions) throws AccountAlreadyExistsException {
-
+            accountsToTransactions.put(account, transactions);
     }
 
     /**
