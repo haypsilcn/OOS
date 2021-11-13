@@ -74,6 +74,10 @@ abstract class Transaction implements CalculateBill {
         return this.amount;
     }
 
+    public double calculate() {
+        return amount;
+    }
+
     /**
      * @return den Inhalt aller Klassenattribute
      */

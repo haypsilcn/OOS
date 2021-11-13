@@ -5,6 +5,7 @@ import bank.exceptions.AccountDoesNotExistException;
 import bank.exceptions.TransactionAlreadyExistException;
 import bank.exceptions.TransactionDoesNotExistException;
 
+import javax.swing.*;
 import java.util.*;
 
 public class PrivateBank implements Bank {
@@ -28,7 +29,7 @@ public class PrivateBank implements Bank {
      * Links accounts to transactions so that 0 to N transactions can be assigned to
      * each stored account
      */
-    private Map<String, List<Transaction>> accountsToTransaction =  new HashMap<>();
+    private Map<String, List<Transaction>> accountsToTransaction =  new HashMap<String, List<Transaction>>();
 
 
 
@@ -64,8 +65,14 @@ public class PrivateBank implements Bank {
         this.incomingInterest = newIncomingInterest;
         this.outcomingInterest = newOutcomingInterest;
 
-        accountsToTransaction.put("am", null);
-        accountsToTransaction.put("ma", null);
+        accountsToTransaction.put("", null);
+        accountsToTransaction.put("testing acc 1", List.of(
+                new Transaction("12.12.2000", "Des", 212) {
+                },
+                new Transaction("21.04.3244", "Des1", 33) {
+                }
+        ));
+        accountsToTransaction.put("testing acc 2", null);
     }
 
     /**
@@ -81,8 +88,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public String toString() {
-        Set<String> key = accountsToTransaction.keySet();
-        return "Name: " + name + ", Incoming Interest: " + incomingInterest + ", Outcoming Interest: " + outcomingInterest + ", " + key;
+        return "Name: " + name + ", Incoming Interest: " + incomingInterest + ", Outcoming Interest: " + outcomingInterest + ", " + accountsToTransaction.toString();
     }
 
 
@@ -100,14 +106,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void createAccount(String account) throws AccountAlreadyExistsException {
-        //Set<String> keySet = accountsToTransaction.keySet();
-        /*for (String key : accountsToTransaction.keySet()) {
-            if (key == account)
-                throw new AccountAlreadyExistsException("Error: Account already exists!");
-        }*/
-
-        Set<String> key = accountsToTransaction.keySet();
-        if (key.equals(account))
+        if (accountsToTransaction.containsKey(account))
             throw new AccountAlreadyExistsException("Error: Account already exists!");
         else
             accountsToTransaction.put(account, null);
