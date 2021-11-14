@@ -87,7 +87,7 @@ public class Transfer extends Transaction {
      */
     @Override
     public String toString() {
-        return super.toString() + ", Sender: " + sender + ", Recipient: " + recipient + "\n";
+        return super.toString() + ", Sender: " + sender + ", Recipient: " + recipient;
     }
 
     /**

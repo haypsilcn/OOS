@@ -1,6 +1,6 @@
 package bank;
 
-abstract class Transaction implements CalculateBill {
+public abstract class Transaction implements CalculateBill {
 
     /**
      * stellt den Zeitpunkt der Transaktion mit dem Format als DD.MM.YYYY dar

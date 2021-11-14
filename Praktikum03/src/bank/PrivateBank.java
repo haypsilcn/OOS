@@ -28,7 +28,7 @@ public class PrivateBank implements Bank {
      * Links accounts to transactions so that 0 to N transactions can be assigned to
      * each stored account
      */
-    private final Map<String, List<Transaction>> accountsToTransactions =  new HashMap<String, List<Transaction>>();
+    private final Map<String, List<Transaction>> accountsToTransactions =  new HashMap<>();
 
 
 
@@ -74,24 +74,20 @@ public class PrivateBank implements Bank {
     }
 
     /**
-     * useless and redundant
      * @return contents of all attributes
      */
     @Override
     public String toString() {
-        return "Name: " + name + "\nIncoming Interest: " + incomingInterest + "\nOutcoming Interest: " + outcomingInterest;
-    }
-
-    public void printAll() {
-        System.out.println(PrivateBank.this);
+        StringBuilder str = new StringBuilder();
         Set<String> setKey = accountsToTransactions.keySet();
         for (String key : setKey) {
-            System.out.print(key + " => [\n");
-            List<Transaction> valueTransaction = accountsToTransactions.get(key);
-            for (Transaction value : valueTransaction)
-                System.out.print("\t\t" + value);
-            System.out.println("]");
+            str.append(key).append(" => [");
+            List<Transaction> transactionsList = accountsToTransactions.get(key);
+            for (Transaction transaction : transactionsList)
+                str.append("\n\t\t").append(transaction);
+            str.append(" ]\n");
         }
+        return "\nName: " + name + "\nIncoming Interest: " + incomingInterest + "\nOutcoming Interest: " + outcomingInterest + "\n" + str;
     }
 
     public boolean equals(Object obj) {
@@ -108,10 +104,11 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void createAccount(String account) throws AccountAlreadyExistsException {
+        System.out.println("Adding new account <" + account + ">");
         if (accountsToTransactions.containsKey(account))
-            throw new AccountAlreadyExistsException("Error: Account already exists!");
+            throw new AccountAlreadyExistsException("Account <" + account +"> already exists!\n");
         else
-            accountsToTransactions.put(account, null);
+            accountsToTransactions.put(account, List.of());
     }
 
     /**
@@ -124,7 +121,17 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void createAccount(String account, List<Transaction> transactions) throws AccountAlreadyExistsException {
+        System.out.println("Adding new account <" + account + ">");
+        if ( (accountsToTransactions.containsKey(account)) || (accountsToTransactions.containsKey(account) && accountsToTransactions.containsValue(transactions)) )
+            throw new AccountAlreadyExistsException("Account <" + account + "> already exists!\n");
+        else {
+            for (Transaction valueOfTransactions : transactions)
+                if (valueOfTransactions instanceof Payment payment) {
+                    payment.setIncomingInterest(PrivateBank.this.incomingInterest);
+                    payment.setOutcomingInterest(PrivateBank.this.outcomingInterest);
+                }
             accountsToTransactions.put(account, transactions);
+        }
     }
 
     /**
@@ -137,7 +144,21 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void addTransaction(String account, Transaction transaction) throws TransactionAlreadyExistException, AccountDoesNotExistException {
-
+        if (!accountsToTransactions.containsKey(account))
+            throw new AccountDoesNotExistException("Account <" + account + "> does not exists in bank!");
+        else {
+            if (accountsToTransactions.get(account).contains(transaction))
+                throw new TransactionAlreadyExistException("This Transaction <" + transaction + "> already exists!\n");
+            else {
+                if (transaction instanceof Payment payment) {
+                    payment.setIncomingInterest(PrivateBank.this.incomingInterest);
+                    payment.setOutcomingInterest(PrivateBank.this.outcomingInterest);
+                }
+                List<Transaction> transactionsList = new ArrayList<>(accountsToTransactions.get(account));
+                transactionsList.add(transaction);
+                accountsToTransactions.put(account, transactionsList);
+            }
+        }
     }
 
     /**
@@ -150,6 +171,13 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void removeTransaction(String account, Transaction transaction) throws TransactionDoesNotExistException {
+        if (!accountsToTransactions.get(account).contains(transaction))
+            throw new TransactionDoesNotExistException("This transaction <" + transaction + "> does not exist!");
+        else {
+            List<Transaction> transactionsList = new ArrayList<>(accountsToTransactions.get(account));
+            transactionsList.remove(transaction);
+            accountsToTransactions.put(account, transactionsList);
+        }
 
     }
 
@@ -161,7 +189,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public boolean containsTransaction(String account, Transaction transaction) {
-        return false;
+        return accountsToTransactions.get(account).contains(transaction);
     }
 
     /**
@@ -183,7 +211,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public List<Transaction> getTransactions(String account) {
-        return null;
+        return accountsToTransactions.get(account);
     }
 
     /**
@@ -196,7 +224,14 @@ public class PrivateBank implements Bank {
      */
     @Override
     public List<Transaction> getTransactionsSorted(String account, boolean asc) {
-        return null;
+
+        List<Transaction> transactionsList = accountsToTransactions.get(account);
+        if(asc)
+            transactionsList.sort(Comparator.comparingDouble(Transaction::calculate));
+        else
+            transactionsList.sort(Comparator.comparingDouble(Transaction::calculate).reversed());
+
+        return transactionsList;
     }
 
     /**
