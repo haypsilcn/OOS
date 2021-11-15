@@ -99,12 +99,8 @@ public class Main {
         privateBankAlt.containsTransaction("Molziles", new Transfer("03.03.2000", "Transfer", 80, "Molziles", "Elixir"));
         privateBankAlt.containsTransaction("Anand", new Payment("22.03.2003", "Payment", 90, 0.9, 0.75));
 
-        PrivateBankAlt copiedBankAlt = new PrivateBankAlt(privateBankAlt);
-        System.out.println("Testing equals() method:\nprivateBankAlt vs copiedBankAlt expected <true> => " + privateBankAlt.equals(copiedBankAlt) + "\n");
-
 
         PrivateBank privateBank = new PrivateBank("MBBank", 0.25, 0.3);
-
         privateBank.createAccount("Molziles", List.of(
                 new Payment("12.03.2008", "Payment", 321),
                 new Payment("23.09.1897", "Payment", -2500, 0.8, 0.5),
@@ -123,5 +119,8 @@ public class Main {
         privateBank.getAccountBalance("Molziles");
         privateBankAlt.getTransactions("Molziles");
         privateBankAlt.getAccountBalance("Molziles");
+
+        System.out.println("Testing equals() method:\nprivateBank vs privateBankAlt expected <false> => " + privateBankAlt.equals(privateBank));
+
     }
 }
