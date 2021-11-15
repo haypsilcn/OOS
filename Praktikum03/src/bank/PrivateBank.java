@@ -104,7 +104,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void createAccount(String account) throws AccountAlreadyExistsException {
-        System.out.println("Creating new account <" + account + ">");
+        System.out.println("Creating new account <" + account + "> to bank <" + name + ">");
         if (accountsToTransactions.containsKey(account))
             throw new AccountAlreadyExistsException("ACCOUNT <" + account +"> ALREADY EXISTS!\n");
         else {
@@ -123,7 +123,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void createAccount(String account, List<Transaction> transactions) throws AccountAlreadyExistsException {
-        System.out.print("Creating new account <" + account + "> with transactions list: \n\t\t" + transactions.toString().replaceAll("[]]|[\\[]", "").replace("\n, ", "\n\t\t"));
+        System.out.print("Creating new account <" + account + "> to bank <" + name + "> with transactions list: \n\t\t" + transactions.toString().replaceAll("[]]|[\\[]", "").replace("\n, ", "\n\t\t"));
         if ( (accountsToTransactions.containsKey(account)) || (accountsToTransactions.containsKey(account) && accountsToTransactions.containsValue(transactions)) )
             throw new AccountAlreadyExistsException("ACCOUNT <" + account + "> ALREADY EXISTS!\n");
         else {
@@ -133,7 +133,7 @@ public class PrivateBank implements Bank {
                     payment.setOutcomingInterest(PrivateBank.this.outcomingInterest);
                 }
             accountsToTransactions.put(account, transactions);
-                System.out.println("=> SUCCESS!\n");
+            System.out.println("=> SUCCESS!\n");
 
         }
     }
@@ -148,7 +148,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void addTransaction(String account, Transaction transaction) throws TransactionAlreadyExistException, AccountDoesNotExistException {
-        System.out.println("Adding new transaction <" + transaction.toString().replace("\n", "") + "> to account <" + account + ">");
+        System.out.println("Adding new transaction <" + transaction.toString().replace("\n", "") + "> to account <" + account + "> in bank <" + name + ">");
         if (!accountsToTransactions.containsKey(account))
             throw new AccountDoesNotExistException("ACCOUNT <" + account + "> DOES NOT EXISTS!\n");
         else {
@@ -177,7 +177,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void removeTransaction(String account, Transaction transaction) throws TransactionDoesNotExistException {
-        System.out.println("Removing transaction <" + transaction.toString().replace("\n", "") + "> from account <" + account + ">");
+        System.out.println("Removing transaction <" + transaction.toString().replace("\n", "") + "> from account <" + account + "> in bank <" + name + ">");
         if (!accountsToTransactions.get(account).contains(transaction))
             throw new TransactionDoesNotExistException("THIS TRANSACTION DOES NOT EXISTS!\n");
         else {
@@ -215,11 +215,8 @@ public class PrivateBank implements Bank {
     public double getAccountBalance(String account) {
         double balance = 0;
         for (Transaction transaction : accountsToTransactions.get(account))
-            if (transaction instanceof Transfer transfer && transfer.getSender().equals(account))
-                balance = balance - transaction.calculate();
-            else
-                balance = balance + transaction.calculate();
-        System.out.println("Balance of account <" + account + "> : " + (double) Math.round(balance * 100)/100 + "\n");
+            balance = balance + transaction.calculate();
+        System.out.println("Balance of account <" + account + "> in bank <" + name + "> : " + (double) Math.round(balance * 100)/100 + "\n");
         return balance;
     }
 
@@ -231,7 +228,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public List<Transaction> getTransactions(String account) {
-        System.out.println("Transactions list of account <" + account + ">\n" + accountsToTransactions.get(account).toString().replace("[", "\t\t").replace("]","").replace("\n, ", "\n\t\t"));
+        System.out.println("Transactions list of account <" + account + "> in bank <" + name + ">\n" + accountsToTransactions.get(account).toString().replace("[", "\t\t").replace("]","").replace("\n, ", "\n\t\t"));
         return accountsToTransactions.get(account);
     }
 
