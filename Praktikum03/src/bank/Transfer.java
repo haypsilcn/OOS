@@ -53,7 +53,7 @@ public class Transfer extends Transaction {
     }
 
     /**
-     * Konstruktor mit drei Attributen
+     * Konstruktor mit aller Attributen
      * @param newDate Wert für date
      * @param newDescription Wert für description
      * @param newAmount Wert für amount
