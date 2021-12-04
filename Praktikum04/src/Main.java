@@ -47,13 +47,15 @@ public class Main {
 //        System.out.println("Printing object from Gson:\n" + gsonPayment);
 
 
-        PrivateBank privateBank = new PrivateBank("MBBank", 0.25, 0.3);
-        privateBank.createAccount("Molziles", List.of(
+        PrivateBank deutscheBank = new PrivateBank("Deutsche Bank", 0.25, 0.3);
+        PrivateBank aachenerBank= new PrivateBank("Aachener Bank", 0.25, 0.3);
+
+        deutscheBank.createAccount("Molziles", List.of(
                 new Payment("12.03.2008", "Payment", 321),
                 new Payment("23.09.1897", "Payment", -2500, 0.8, 0.5),
                 new OutcomingTransfer("03.03.2000", "OutcomingTransfer", 80, "Molziles", "Elixir")
         ));
-        privateBank.createAccount("Elixir", List.of(
+        deutscheBank.createAccount("Elixir", List.of(
                 new Payment("22.06.1998", "Payment", 435, 0., 0.),
                 new IncomingTransfer("03.03.2000", "IncomingTransfer", 80, "Molziles", "Elixir"),
                 new Payment("05.08.2022", "Payment", -118, 0., 0.),
@@ -61,9 +63,9 @@ public class Main {
                 new OutcomingTransfer("30.07.2020", "OutcomingTransfer", 1890, "Elixir", "Booth"),
                 new Payment("19.01.2011", "Payment", -789, 0.9, 0.25)
         ));
-        privateBank.createAccount("Hagen");
+        deutscheBank.createAccount("Hagen");
 
-        String jsonPrivateBank = (new Gson()).toJson(privateBank);
+        String jsonPrivateBank = (new Gson()).toJson(deutscheBank);
         try (FileWriter fileBank = new FileWriter("src/JsonFiles/privateBank" + ".json")) {
             fileBank.write(jsonPrivateBank);
         } catch (IOException e) {

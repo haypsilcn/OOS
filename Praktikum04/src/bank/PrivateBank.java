@@ -4,13 +4,14 @@ import bank.exceptions.AccountAlreadyExistsException;
 import bank.exceptions.AccountDoesNotExistException;
 import bank.exceptions.TransactionAlreadyExistException;
 import bank.exceptions.TransactionDoesNotExistException;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class PrivateBank implements Bank {
@@ -19,6 +20,11 @@ public class PrivateBank implements Bank {
      * Represents the name of private Bank
      */
     private String name;
+
+    /**
+     * Represent directory for all Json files for PrivateBank
+     */
+    private String directoryName;
 
     /**
      * The interest (positive value in percent, 0 to 1) accrues on a deposit
@@ -70,6 +76,14 @@ public class PrivateBank implements Bank {
         this.incomingInterest = newIncomingInterest;
         this.outcomingInterest = newOutcomingInterest;
 
+        directoryName = "PrivateBanks/" + PrivateBank.this.getName();
+        try {
+            Path path = Paths.get(directoryName);
+            Files.createDirectories(path);
+            System.out.println("Directory for " + PrivateBank.this.getName() + "is created!");
+        } catch (IOException e) {
+            System.out.println("Failed to create directory for " + PrivateBank.this.getName() + "!");
+        }
     }
 
     /**
@@ -78,6 +92,15 @@ public class PrivateBank implements Bank {
     public PrivateBank(PrivateBank newPrivateBank) {
         this(newPrivateBank.name, newPrivateBank.incomingInterest, newPrivateBank.outcomingInterest);
         this.accountsToTransactions = newPrivateBank.accountsToTransactions;
+
+        directoryName = "CopiedPrivateBanks/" + PrivateBank.this.getName();
+        try {
+            Path path = Paths.get(directoryName);
+            Files.createDirectories(path);
+            System.out.println("Directory for copied " + PrivateBank.this.getName() + "is created!");
+        } catch (IOException e) {
+            System.out.println("Failed to create directory for copied " + PrivateBank.this.getName() + "!");
+        }
     }
 
     /**
@@ -289,7 +312,7 @@ public class PrivateBank implements Bank {
     }
 
     private void writeAccount(String account) {
-        String transactionsList = (new Gson().toJson(accountsToTransactions.get(account)));
+       /* String transactionsList = (new Gson().toJson(accountsToTransactions.get(account)));
 
         CustomSerializer serializer = new CustomSerializer();
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -301,7 +324,7 @@ public class PrivateBank implements Bank {
             file.write(transactionsList);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 }
