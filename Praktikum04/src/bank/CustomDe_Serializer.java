@@ -13,17 +13,24 @@ public class CustomDe_Serializer implements JsonSerializer<Transaction>, JsonDes
     @Override
     public JsonElement serialize(Transaction transaction, Type type, JsonSerializationContext jsonSerializationContext) {
 
-         /*  String string = (new Gson().toJson(transaction));
-
-        return new JsonPrimitive(string);*/
-//        if (transaction instanceof Payment) {
-     /*   String string = "CLASSNAME" + "\\n\n" + "[";
-           return new JsonPrimitive(string + transaction.getClass());*/
-//        }
-
         JsonObject jsonTransaction = new JsonObject();
-        jsonTransaction.addProperty("CLASS: ", String.valueOf(transaction.getClass()));
+        JsonObject jsonObject = new JsonObject();
 
-        return jsonTransaction;
+        if (transaction instanceof Transfer transfer) {
+            jsonTransaction.addProperty("sender", transfer.getSender());
+            jsonTransaction.addProperty("recipient", transfer.getRecipient());
+        }
+        else if (transaction instanceof Payment payment) {
+            jsonTransaction.addProperty("incomingInterest", payment.getIncomingInterest());
+            jsonTransaction.addProperty("outcomingInterest", payment.getOutcomingInterest());
+        }
+        jsonTransaction.addProperty("date", transaction.getDate());
+        jsonTransaction.addProperty("amount", transaction.getAmount());
+        jsonTransaction.addProperty("description", transaction.getDescription());
+
+        jsonObject.addProperty("CLASSNAME", transaction.getClass().getSimpleName());
+        jsonObject.add("INSTANCE", jsonTransaction);
+
+        return jsonObject;
     }
 }

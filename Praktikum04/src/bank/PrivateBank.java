@@ -6,10 +6,8 @@ import bank.exceptions.TransactionAlreadyExistException;
 import bank.exceptions.TransactionDoesNotExistException;
 import com.google.gson.*;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -46,13 +44,13 @@ public class PrivateBank implements Bank {
      * Links accounts to transactions so that 0 to N transactions can be assigned to
      * each stored account
      */
-    private Map<String, List<Transaction>> accountsToTransactions =  new HashMap<>();
-
+    private Map<String, List<Transaction>> accountsToTransactions = new HashMap<>();
 
 
     public void setName(String name) {
         this.name = name;
     }
+
     public String getName() {
         return this.name;
     }
@@ -61,6 +59,7 @@ public class PrivateBank implements Bank {
     public void setIncomingInterest(double incomingInterest) {
         this.incomingInterest = incomingInterest;
     }
+
     public double getIncomingInterest() {
         return incomingInterest;
     }
@@ -69,6 +68,7 @@ public class PrivateBank implements Bank {
     public void setOutcomingInterest(double outcomingInterest) {
         this.outcomingInterest = outcomingInterest;
     }
+
     public double getOutcomingInterest() {
         return outcomingInterest;
     }
@@ -76,16 +76,16 @@ public class PrivateBank implements Bank {
     public void setDirectoryName(String directoryName) {
         this.directoryName = directoryName;
     }
+
     public String getDirectoryName() {
         return directoryName;
     }
 
-    public void setFullPath(String directoryName ,boolean copiedBankPath) {
-        if (copiedBankPath)
-            fullPath = "PrivateBanks/_CopiedPrivateBanks/" + directoryName;
-        else
-            fullPath = "PrivateBanks/" + directoryName;
+    public void setFullPath(String directoryName, boolean copiedBankPath) {
+        if (copiedBankPath) fullPath = "PrivateBanks/_CopiedPrivateBanks/" + directoryName;
+        else fullPath = "PrivateBanks/" + directoryName;
     }
+
     public String getFullPath() {
         return fullPath;
     }
@@ -161,7 +161,7 @@ public class PrivateBank implements Bank {
     public void createAccount(String account) throws AccountAlreadyExistsException, IOException {
         System.out.println("Creating new account <" + account + "> to bank <" + name + ">");
         if (accountsToTransactions.containsKey(account))
-            throw new AccountAlreadyExistsException("ACCOUNT <" + account +"> ALREADY EXISTS!\n");
+            throw new AccountAlreadyExistsException("ACCOUNT <" + account + "> ALREADY EXISTS!\n");
         else {
             accountsToTransactions.put(account, List.of());
             writeAccount(account);
@@ -180,7 +180,7 @@ public class PrivateBank implements Bank {
     @Override
     public void createAccount(String account, List<Transaction> transactions) throws AccountAlreadyExistsException, IOException {
         System.out.print("Creating new account <" + account + "> to bank <" + name + "> with transactions list: \n\t\t" + transactions.toString().replaceAll("[]]|[\\[]", "").replace("\n, ", "\n\t\t"));
-        if ( (accountsToTransactions.containsKey(account)) || (accountsToTransactions.containsKey(account) && accountsToTransactions.containsValue(transactions)) )
+        if ((accountsToTransactions.containsKey(account)) || (accountsToTransactions.containsKey(account) && accountsToTransactions.containsValue(transactions)))
             throw new AccountAlreadyExistsException("ACCOUNT <" + account + "> ALREADY EXISTS!\n");
         else {
             for (Transaction valueOfTransactions : transactions)
@@ -274,7 +274,7 @@ public class PrivateBank implements Bank {
         double balance = 0;
         for (Transaction transaction : accountsToTransactions.get(account))
             balance = balance + transaction.calculate();
-        System.out.println("Balance of account <" + account + "> in bank <" + name + "> : " + (double) Math.round(balance * 100)/100 + "\n");
+        System.out.println("Balance of account <" + account + "> in bank <" + name + "> : " + (double) Math.round(balance * 100) / 100 + "\n");
         return balance;
     }
 
@@ -286,7 +286,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public List<Transaction> getTransactions(String account) {
-        System.out.println("Transactions list of account <" + account + "> in bank <" + name + ">\n" + accountsToTransactions.get(account).toString().replace("[", "\t\t").replace("]","").replace("\n, ", "\n\t\t"));
+        System.out.println("Transactions list of account <" + account + "> in bank <" + name + ">\n" + accountsToTransactions.get(account).toString().replace("[", "\t\t").replace("]", "").replace("\n, ", "\n\t\t"));
         return accountsToTransactions.get(account);
     }
 
@@ -302,13 +302,12 @@ public class PrivateBank implements Bank {
     public List<Transaction> getTransactionsSorted(String account, boolean asc) {
         // create new list to store sorted list without affecting original list
         List<Transaction> sortedTransactionsList = new ArrayList<>(accountsToTransactions.get(account));
-        if(asc) {
+        if (asc) {
             sortedTransactionsList.sort(Comparator.comparingDouble(Transaction::calculate));
-            System.out.println("Sorting transactions of account <" + account + "> by calculated amounts in ASCENDING order:\n" + sortedTransactionsList.toString().replace("[", "\t\t").replace("]","").replace("\n, ", "\n\t\t"));
-        }
-        else {
+            System.out.println("Sorting transactions of account <" + account + "> by calculated amounts in ASCENDING order:\n" + sortedTransactionsList.toString().replace("[", "\t\t").replace("]", "").replace("\n, ", "\n\t\t"));
+        } else {
             sortedTransactionsList.sort(Comparator.comparingDouble(Transaction::calculate).reversed());
-            System.out.println("Sorting transactions of account <" + account + "> by calculated amounts in DESCENDING order:\n" + sortedTransactionsList.toString().replace("[", "\t\t").replace("]","").replace("\n, ", "\n\t\t"));
+            System.out.println("Sorting transactions of account <" + account + "> by calculated amounts in DESCENDING order:\n" + sortedTransactionsList.toString().replace("[", "\t\t").replace("]", "").replace("\n, ", "\n\t\t"));
         }
         return sortedTransactionsList;
     }
@@ -323,63 +322,38 @@ public class PrivateBank implements Bank {
     @Override
     public List<Transaction> getTransactionsByType(String account, boolean positive) {
         List<Transaction> transactionsListByType = new ArrayList<>();
-        if (positive)
-            System.out.println("List of POSITIVE transactions of account <" + account + "> :");
-        else
-            System.out.println("List of NEGATIVE transactions of account <" + account + "> :");
+        if (positive) System.out.println("List of POSITIVE transactions of account <" + account + "> :");
+        else System.out.println("List of NEGATIVE transactions of account <" + account + "> :");
         for (Transaction transaction : accountsToTransactions.get(account)) {
-            if (positive && transaction.calculate() >= 0)
-                transactionsListByType.add(transaction);
-            else if (!positive && transaction.calculate() < 0)
-                transactionsListByType.add(transaction);
+            if (positive && transaction.calculate() >= 0) transactionsListByType.add(transaction);
+            else if (!positive && transaction.calculate() < 0) transactionsListByType.add(transaction);
         }
-        System.out.println(transactionsListByType.toString().replace("[", "\t\t").replace("]","").replace("\n, ", "\n\t\t"));
+        System.out.println(transactionsListByType.toString().replace("[", "\t\t").replace("]", "").replace("\n, ", "\n\t\t"));
 
         return transactionsListByType;
     }
 
+
     private void writeAccount(String account) {
-//        String transactionsList = (new Gson().toJson(accountsToTransactions.get(account)));
-//        CustomDe_Serializer serializer = new CustomDe_Serializer();
-//        Gson gson
-//        JsonSerializer<Transaction> serializer = new CustomDe_Serializer();
 
+        try (FileWriter file = new FileWriter(getFullPath() + "/" + account + ".json")) {
 
-//        String json = gson.toJson(accountsToTransactions.get(account));
+            file.write("[");
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        JsonSerializer<Transaction> serializer = (transaction, type, jsonSerializationContext) -> {
-            JsonObject jsonTransaction = new JsonObject();
-            jsonTransaction.addProperty("CLASS: ", transaction.getDescription());
-
-            return jsonTransaction;
-        };
-        gsonBuilder.registerTypeAdapter((Transaction.class), serializer);
-        Gson customGson = gsonBuilder.create();
-        try (FileWriter file = new FileWriter(getFullPath() + "/" + account + ".json")){
-//            file.write(json);
-//            file.write(transactionsList);
-//            for (Transaction )
-            file.write("[\n");
-            for (Transaction valueOfTransactions : accountsToTransactions.get(account)) {
-
-                String customJSON = customGson.toJson(valueOfTransactions);
-                file.write("{\"CLASSNAME\": ");
-                if (valueOfTransactions instanceof Payment)
-                    file.write("\"Payment\",");
-                else if (valueOfTransactions instanceof IncomingTransfer)
-                    file.write("\"IncomingTransfer\",");
-                else
-                    file.write("\"OutgoingTransfer\",");
-                file.write("\n\"INSTANCE\": ");
-                file.write(customJSON);
-                file.write(",},");
+            for (Transaction transaction : accountsToTransactions.get(account)) {
+                Gson gson = new GsonBuilder().registerTypeAdapter(transaction.getClass(), new CustomDe_Serializer()).setPrettyPrinting().create();
+                String json = gson.toJson(transaction);
+                file.write("");
+                if (accountsToTransactions.get(account).indexOf(transaction) != 0)
+                    file.write(",");
+                file.write(json);
             }
-            file.write("\n]");
+
+            file.write("]");
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-//        new File(getFullPath() + "/" + account + ".json");
     }
 }

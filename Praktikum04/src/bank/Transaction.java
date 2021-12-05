@@ -97,4 +97,5 @@ public abstract class Transaction implements CalculateBill {
             return (this.date.equals(transaction.date) && this.description.equals(transaction.description) && this.amount == transaction.amount);
         return false;
     }
+
 }

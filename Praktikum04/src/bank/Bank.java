@@ -96,4 +96,5 @@ public interface Bank {
      * @return the list of transactions
      */
     List<Transaction> getTransactionsByType(String account, boolean positive);
+
 }
