@@ -21,7 +21,7 @@ public class Main {
         String json = gson.toJson(payment);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
-        CustomSerializer serializer = new CustomSerializer();
+        CustomDe_Serializer serializer = new CustomDe_Serializer();
         gsonBuilder.registerTypeAdapter(Payment.class, serializer);
 
         Gson custom = gsonBuilder.create();
@@ -39,7 +39,7 @@ public class Main {
         }
 
 
-      /*  Gson gson_ = new GsonBuilder().registerTypeAdapter(Payment.class, new bank.CustomSerializer()).setPrettyPrinting().create();
+      /*  Gson gson_ = new GsonBuilder().registerTypeAdapter(Payment.class, new bank.CustomDe_Serializer()).setPrettyPrinting().create();
         System.out.println(gson_.toJson(payment));
 
         Payment gsonPayment = gson.fromJson(json, Payment.class);*/
@@ -47,8 +47,9 @@ public class Main {
 //        System.out.println("Printing object from Gson:\n" + gsonPayment);
 
 
-        PrivateBank deutscheBank = new PrivateBank("Deutsche Bank", 0.25, 0.3);
-        PrivateBank aachenerBank= new PrivateBank("Aachener Bank", 0.25, 0.3);
+        PrivateBank deutscheBank = new PrivateBank("Deutsche Bank", "Deutsche Bank", 0.25, 0.3);
+        PrivateBank aachenerBank = new PrivateBank("Aachener Bank", "Aachen", 0.11, 0.26);
+        PrivateBank copiedAachenerBank = new PrivateBank(aachenerBank);
 
         deutscheBank.createAccount("Molziles", List.of(
                 new Payment("12.03.2008", "Payment", 321),
@@ -60,17 +61,17 @@ public class Main {
                 new IncomingTransfer("03.03.2000", "IncomingTransfer", 80, "Molziles", "Elixir"),
                 new Payment("05.08.2022", "Payment", -118, 0., 0.),
                 new OutcomingTransfer("15.04.1990", "OutcomingTransfer", 185, "Elixir", "Vaio"),
-                new OutcomingTransfer("30.07.2020", "OutcomingTransfer", 1890, "Elixir", "Booth"),
-                new Payment("19.01.2011", "Payment", -789, 0.9, 0.25)
+                new OutcomingTransfer("30.07.2020", "OutcomingTransfer", 1890, "Elixir", "Booth")
         ));
         deutscheBank.createAccount("Hagen");
+        deutscheBank.addTransaction("Hagen", new Payment("19.01.2011", "Payment", -789, 0.9, 0.25));
 
-        String jsonPrivateBank = (new Gson()).toJson(deutscheBank);
+        /*String jsonPrivateBank = (new Gson()).toJson(deutscheBank);
         try (FileWriter fileBank = new FileWriter("src/JsonFiles/privateBank" + ".json")) {
             fileBank.write(jsonPrivateBank);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 }

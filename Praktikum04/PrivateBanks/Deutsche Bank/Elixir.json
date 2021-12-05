@@ -1,0 +1,52 @@
+[
+  {
+    "CLASSNAME": "Payment",
+    "INSTANCE": {
+      "incomingInterest": 0.25,
+      "outcomingInterest": 0.3,
+      "date": "22.06.1998",
+      "description": "Payment",
+      "amount": 435.0
+    }
+  },
+  {
+    "CLASSNAME": "IncomingTransfer",
+    "INSTANCE": {
+      "sender": "Molziles",
+      "recipient": "Elixir",
+      "date": "03.03.2000",
+      "description": "IncomingTransfer",
+      "amount": 80.0
+    }
+  },
+  {
+    "CLASSNAME": "Payment",
+    "INSTANCE": {
+      "incomingInterest": 0.25,
+      "outcomingInterest": 0.3,
+      "date": "05.08.2022",
+      "description": "Payment",
+      "amount": -118.0
+    }
+  },
+  {
+    "CLASSNAME": "OutgoingTransfer",
+    "INSTANCE": {
+      "sender": "Elixir",
+      "recipient": "Vaio",
+      "date": "15.04.1990",
+      "description": "OutcomingTransfer",
+      "amount": 185.0
+    }
+  },
+  {
+    "CLASSNAME": "OutgoingTransfer",
+    "INSTANCE": {
+      "sender": "Elixir",
+      "recipient": "Booth",
+      "date": "30.07.2020",
+      "description": "OutcomingTransfer",
+      "amount": 1890.0
+    }
+  }
+]

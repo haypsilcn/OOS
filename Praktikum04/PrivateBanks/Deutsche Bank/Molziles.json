@@ -1,0 +1,32 @@
+[
+  {
+    "CLASSNAME": "Payment",
+    "INSTANCE": {
+      "incomingInterest": 0.25,
+      "outcomingInterest": 0.3,
+      "date": "12.03.2008",
+      "description": "Payment",
+      "amount": 321.0
+    }
+  },
+  {
+    "CLASSNAME": "Payment",
+    "INSTANCE": {
+      "incomingInterest": 0.25,
+      "outcomingInterest": 0.3,
+      "date": "23.09.1897",
+      "description": "Payment",
+      "amount": -2500.0
+    }
+  },
+  {
+    "CLASSNAME": "OutgoingTransfer",
+    "INSTANCE": {
+      "sender": "Molziles",
+      "recipient": "Elixir",
+      "date": "03.03.2000",
+      "description": "OutcomingTransfer",
+      "amount": 80.0
+    }
+  }
+]

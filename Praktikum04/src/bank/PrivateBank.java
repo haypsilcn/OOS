@@ -4,6 +4,7 @@ import bank.exceptions.AccountAlreadyExistsException;
 import bank.exceptions.AccountDoesNotExistException;
 import bank.exceptions.TransactionAlreadyExistException;
 import bank.exceptions.TransactionDoesNotExistException;
+import com.google.gson.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -25,6 +26,11 @@ public class PrivateBank implements Bank {
      * Represent directory for all Json files for PrivateBank
      */
     private String directoryName;
+
+    /**
+     * full path of directory where stores all files
+     */
+    private String fullPath;
 
     /**
      * The interest (positive value in percent, 0 to 1) accrues on a deposit
@@ -67,20 +73,39 @@ public class PrivateBank implements Bank {
         return outcomingInterest;
     }
 
+    public void setDirectoryName(String directoryName) {
+        this.directoryName = directoryName;
+    }
+    public String getDirectoryName() {
+        return directoryName;
+    }
+
+    public void setFullPath(String directoryName ,boolean copiedBankPath) {
+        if (copiedBankPath)
+            fullPath = "PrivateBanks/_CopiedPrivateBanks/" + directoryName;
+        else
+            fullPath = "PrivateBanks/" + directoryName;
+    }
+    public String getFullPath() {
+        return fullPath;
+    }
+
 
     /**
-     * Constructor with three attribute
+     * Constructor with four attribute
      */
-    public PrivateBank(String newName, double newIncomingInterest, double newOutcomingInterest) {
+    public PrivateBank(String newName, String newDirectoryName, double newIncomingInterest, double newOutcomingInterest) {
         this.name = newName;
+        this.directoryName = newDirectoryName;
         this.incomingInterest = newIncomingInterest;
         this.outcomingInterest = newOutcomingInterest;
 
-        directoryName = "PrivateBanks/" + PrivateBank.this.getName();
+        setFullPath(newDirectoryName, false);
+
         try {
-            Path path = Paths.get(directoryName);
+            Path path = Paths.get(fullPath);
             Files.createDirectories(path);
-            System.out.println("Directory for " + PrivateBank.this.getName() + "is created!");
+            System.out.println("Directory for " + PrivateBank.this.getName() + " is created!");
         } catch (IOException e) {
             System.out.println("Failed to create directory for " + PrivateBank.this.getName() + "!");
         }
@@ -90,14 +115,15 @@ public class PrivateBank implements Bank {
      * Copy Constructor
      */
     public PrivateBank(PrivateBank newPrivateBank) {
-        this(newPrivateBank.name, newPrivateBank.incomingInterest, newPrivateBank.outcomingInterest);
+        this(newPrivateBank.name, newPrivateBank.directoryName, newPrivateBank.incomingInterest, newPrivateBank.outcomingInterest);
         this.accountsToTransactions = newPrivateBank.accountsToTransactions;
 
-        directoryName = "CopiedPrivateBanks/" + PrivateBank.this.getName();
+        setFullPath(newPrivateBank.directoryName, true);
         try {
-            Path path = Paths.get(directoryName);
+            Path path = Paths.get(fullPath);
+            System.out.println(path);
             Files.createDirectories(path);
-            System.out.println("Directory for copied " + PrivateBank.this.getName() + "is created!");
+            System.out.println("Directory for copied " + PrivateBank.this.getName() + " is created!");
         } catch (IOException e) {
             System.out.println("Failed to create directory for copied " + PrivateBank.this.getName() + "!");
         }
@@ -193,6 +219,7 @@ public class PrivateBank implements Bank {
                 List<Transaction> transactionsList = new ArrayList<>(accountsToTransactions.get(account));
                 transactionsList.add(transaction);
                 accountsToTransactions.put(account, transactionsList);
+                writeAccount(account);
                 System.out.println("=> SUCCESS!\n");
             }
         }
@@ -312,19 +339,47 @@ public class PrivateBank implements Bank {
     }
 
     private void writeAccount(String account) {
-       /* String transactionsList = (new Gson().toJson(accountsToTransactions.get(account)));
+//        String transactionsList = (new Gson().toJson(accountsToTransactions.get(account)));
+//        CustomDe_Serializer serializer = new CustomDe_Serializer();
+//        Gson gson
+//        JsonSerializer<Transaction> serializer = new CustomDe_Serializer();
 
-        CustomSerializer serializer = new CustomSerializer();
+
+//        String json = gson.toJson(accountsToTransactions.get(account));
+
         GsonBuilder gsonBuilder = new GsonBuilder();
-//        gsonBuilder.registerTypeAdapter((Type) accountsToTransactions.get(account), serializer);
-        Gson gson = gsonBuilder.create();
-        String json = gson.toJson(accountsToTransactions.get(account));
-        try (FileWriter file = new FileWriter("src/JsonFiles/" + account + ".json")){
+        JsonSerializer<Transaction> serializer = (transaction, type, jsonSerializationContext) -> {
+            JsonObject jsonTransaction = new JsonObject();
+            jsonTransaction.addProperty("CLASS: ", transaction.getDescription());
+
+            return jsonTransaction;
+        };
+        gsonBuilder.registerTypeAdapter((Transaction.class), serializer);
+        Gson customGson = gsonBuilder.create();
+        try (FileWriter file = new FileWriter(getFullPath() + "/" + account + ".json")){
 //            file.write(json);
-            file.write(transactionsList);
+//            file.write(transactionsList);
+//            for (Transaction )
+            file.write("[\n");
+            for (Transaction valueOfTransactions : accountsToTransactions.get(account)) {
+
+                String customJSON = customGson.toJson(valueOfTransactions);
+                file.write("{\"CLASSNAME\": ");
+                if (valueOfTransactions instanceof Payment)
+                    file.write("\"Payment\",");
+                else if (valueOfTransactions instanceof IncomingTransfer)
+                    file.write("\"IncomingTransfer\",");
+                else
+                    file.write("\"OutgoingTransfer\",");
+                file.write("\n\"INSTANCE\": ");
+                file.write(customJSON);
+                file.write(",},");
+            }
+            file.write("\n]");
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
+//        new File(getFullPath() + "/" + account + ".json");
     }
 }
