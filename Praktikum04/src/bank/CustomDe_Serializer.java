@@ -5,6 +5,7 @@ import com.google.gson.*;
 import java.lang.reflect.Type;
 
 public class CustomDe_Serializer implements JsonSerializer<Transaction>, JsonDeserializer<Transaction> {
+
     @Override
     public Transaction deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         return null;

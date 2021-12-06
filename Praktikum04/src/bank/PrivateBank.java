@@ -333,7 +333,11 @@ public class PrivateBank implements Bank {
         return transactionsListByType;
     }
 
-
+    /**
+     * Persists the specified account in the file system (serialize then save into JSON)
+     *
+     * @param account the account to be written
+     */
     private void writeAccount(String account) {
 
         try (FileWriter file = new FileWriter(getFullPath() + "/" + account + ".json")) {
@@ -341,9 +345,11 @@ public class PrivateBank implements Bank {
             file.write("[");
 
             for (Transaction transaction : accountsToTransactions.get(account)) {
-                Gson gson = new GsonBuilder().registerTypeAdapter(transaction.getClass(), new CustomDe_Serializer()).setPrettyPrinting().create();
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(transaction.getClass(), new CustomDe_Serializer())
+                        .setPrettyPrinting()
+                        .create();
                 String json = gson.toJson(transaction);
-                file.write("");
                 if (accountsToTransactions.get(account).indexOf(transaction) != 0)
                     file.write(",");
                 file.write(json);
@@ -351,9 +357,12 @@ public class PrivateBank implements Bank {
 
             file.write("]");
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void readAccounts() {
+
     }
 }
