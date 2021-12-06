@@ -105,4 +105,5 @@ public class Payment extends Transaction {
             return (super.equals(payment) && incomingInterest == payment.incomingInterest && outcomingInterest == payment.outcomingInterest);
         return false;
     }
+
 }
