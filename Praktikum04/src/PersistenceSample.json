@@ -20,7 +20,7 @@
     }
   },
   {
-    "CLASSNAME": "OutgoingTransfer",
+    "CLASSNAME": "OutcomingTransfer",
     "INSTANCE": {
       "sender": "Account Adam",
       "recipient": "Account Eva",
