@@ -37,7 +37,7 @@ public class PrivateBank implements Bank {
     /**
      * The interest (positive value in percent, 0 to 1) accrues on a withdrawal
      */
-    private double outcomingInterest;
+    private double outgoingInterest;
 
     /**
      * Links accounts to transactions so that 0 to N transactions can be assigned to
@@ -64,12 +64,12 @@ public class PrivateBank implements Bank {
     }
 
 
-    public void setOutcomingInterest(double outcomingInterest) {
-        this.outcomingInterest = outcomingInterest;
+    public void setOutgoingInterest(double outgoingInterest) {
+        this.outgoingInterest = outgoingInterest;
     }
 
-    public double getOutcomingInterest() {
-        return outcomingInterest;
+    public double getOutgoingInterest() {
+        return outgoingInterest;
     }
 
     public void setDirectoryName(String directoryName) {
@@ -93,11 +93,11 @@ public class PrivateBank implements Bank {
     /**
      * Constructor with four attributes
      */
-    public PrivateBank(String newName, String newDirectoryName, double newIncomingInterest, double newOutcomingInterest) throws AccountAlreadyExistsException, IOException {
+    public PrivateBank(String newName, String newDirectoryName, double newIncomingInterest, double newOutgoingInterest) throws AccountAlreadyExistsException, IOException {
         this.name = newName;
         this.directoryName = newDirectoryName;
         this.incomingInterest = newIncomingInterest;
-        this.outcomingInterest = newOutcomingInterest;
+        this.outgoingInterest = newOutgoingInterest;
 
         setFullPath(newDirectoryName, false);
 
@@ -125,7 +125,7 @@ public class PrivateBank implements Bank {
      * Copy Constructor
      */
     public PrivateBank(PrivateBank newPrivateBank) throws AccountAlreadyExistsException, IOException {
-        this(newPrivateBank.name, newPrivateBank.directoryName, newPrivateBank.incomingInterest, newPrivateBank.outcomingInterest);
+        this(newPrivateBank.name, newPrivateBank.directoryName, newPrivateBank.incomingInterest, newPrivateBank.outgoingInterest);
         this.accountsToTransactions = newPrivateBank.accountsToTransactions;
 
         setFullPath(newPrivateBank.directoryName, true);
@@ -161,12 +161,12 @@ public class PrivateBank implements Bank {
             for (Transaction transaction : transactionsList)
                 str.append("\t\t").append(transaction);
         }
-        return "Name: " + name + "\nIncoming Interest: " + incomingInterest + "\nOutcoming Interest: " + outcomingInterest + "\n" + str;
+        return "Name: " + name + "\nIncoming Interest: " + incomingInterest + "\nOutgoing Interest: " + outgoingInterest + "\n" + str;
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof PrivateBank privateBank)
-            return (name.equals(privateBank.name) && incomingInterest == privateBank.incomingInterest && outcomingInterest == privateBank.outcomingInterest && accountsToTransactions.equals(privateBank.accountsToTransactions));
+            return (name.equals(privateBank.name) && incomingInterest == privateBank.incomingInterest && outgoingInterest == privateBank.outgoingInterest && accountsToTransactions.equals(privateBank.accountsToTransactions));
         return false;
     }
 
@@ -209,7 +209,7 @@ public class PrivateBank implements Bank {
             for (Transaction valueOfTransactions : transactions)
                 if (valueOfTransactions instanceof Payment payment) {
                     payment.setIncomingInterest(PrivateBank.this.incomingInterest);
-                    payment.setOutcomingInterest(PrivateBank.this.outcomingInterest);
+                    payment.setOutgoingInterest(PrivateBank.this.outgoingInterest);
                 }
             accountsToTransactions.put(account, transactions);
 
@@ -241,7 +241,7 @@ public class PrivateBank implements Bank {
             else {
                 if (transaction instanceof Payment payment) {
                     payment.setIncomingInterest(PrivateBank.this.incomingInterest);
-                    payment.setOutcomingInterest(PrivateBank.this.outcomingInterest);
+                    payment.setOutgoingInterest(PrivateBank.this.outgoingInterest);
                 }
                 List<Transaction> transactionsList = new ArrayList<>(accountsToTransactions.get(account));
                 transactionsList.add(transaction);
@@ -293,7 +293,7 @@ public class PrivateBank implements Bank {
     public boolean containsTransaction(String account, Transaction transaction) {
         if (transaction instanceof Payment payment) {
             payment.setIncomingInterest(PrivateBank.this.incomingInterest);
-            payment.setOutcomingInterest(PrivateBank.this.outcomingInterest);
+            payment.setOutgoingInterest(PrivateBank.this.outgoingInterest);
         }
         System.out.println("Checking account <" + account + "> contains the transaction <" + transaction.toString().replace("\n", "") + "> : " + accountsToTransactions.get(account).contains(transaction) + "\n");
         return accountsToTransactions.get(account).contains(transaction);
@@ -437,8 +437,8 @@ public class PrivateBank implements Bank {
                         PrivateBank.this.addTransaction(accountName, incomingTransfer);
                     }
                     else {
-                        OutcomingTransfer outcomingTransfer = customGson.fromJson(str, OutcomingTransfer.class);
-                        PrivateBank.this.addTransaction(accountName, outcomingTransfer);
+                        OutgoingTransfer outgoingTransfer = customGson.fromJson(str, OutgoingTransfer.class);
+                        PrivateBank.this.addTransaction(accountName, outgoingTransfer);
                     }
                 }
             } catch (IOException e) {
