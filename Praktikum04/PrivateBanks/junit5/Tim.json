@@ -1,0 +1,10 @@
+[{
+  "CLASSNAME": "IncomingTransfer",
+  "INSTANCE": {
+    "sender": "Adam",
+    "recipient": "Tim",
+    "date": "03.03.2000",
+    "amount": 80.0,
+    "description": "IncomingTransfer from Molziles to Elixir; 80"
+  }
+}]

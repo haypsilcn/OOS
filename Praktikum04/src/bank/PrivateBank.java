@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class PrivateBank implements Bank {
 
@@ -93,7 +94,7 @@ public class PrivateBank implements Bank {
     /**
      * Constructor with four attributes
      */
-    public PrivateBank(String newName, String newDirectoryName, double newIncomingInterest, double newOutgoingInterest) throws AccountAlreadyExistsException, IOException {
+    public PrivateBank(String newName, String newDirectoryName, double newIncomingInterest, double newOutgoingInterest) throws AccountAlreadyExistsException {
         this.name = newName;
         this.directoryName = newDirectoryName;
         this.incomingInterest = newIncomingInterest;
@@ -179,15 +180,15 @@ public class PrivateBank implements Bank {
     @Override
     public void createAccount(String account) throws AccountAlreadyExistsException, IOException {
         System.out.print("\nCreating new account <" + account + "> to bank <" + name + "> ");
-        if (accountsToTransactions.containsKey(account))
+        if (accountsToTransactions.containsKey(account)) {
             throw new AccountAlreadyExistsException("ACCOUNT <" + account + "> ALREADY EXISTS!\n");
+        }
         else {
             accountsToTransactions.put(account, List.of());
 
             Path path = Path.of(PrivateBank.this.getFullPath() + "/" + account + ".json");
             if (Files.notExists(path)) // not to overwrite if the files already exits
                 writeAccount(account);
-
             System.out.println("=> SUCCESS!");
         }
     }
@@ -201,7 +202,7 @@ public class PrivateBank implements Bank {
      * @throws AccountAlreadyExistsException if the account ALREADY EXISTS
      */
     @Override
-    public void createAccount(String account, List<Transaction> transactions) throws AccountAlreadyExistsException, IOException {
+    public void createAccount(String account, List<Transaction> transactions) throws AccountAlreadyExistsException {
         System.out.print("\nCreating new account <" + account + "> to bank <" + name + "> with transactions list: \n\t\t" + transactions.toString().replaceAll("[]]|[\\[]", "").replace("\n, ", "\n\t\t"));
         if ((accountsToTransactions.containsKey(account)) || (accountsToTransactions.containsKey(account) && accountsToTransactions.containsValue(transactions)))
             throw new AccountAlreadyExistsException("ACCOUNT <" + account + "> ALREADY EXISTS!\n");
@@ -247,8 +248,7 @@ public class PrivateBank implements Bank {
                 transactionsList.add(transaction);
                 accountsToTransactions.put(account, transactionsList);
 
-                Path path = Path.of(PrivateBank.this.getFullPath() + "/" + account + ".json");
-                if (Files.notExists(path))
+
                     writeAccount(account);
 
                 System.out.println("=> SUCCESS!");
@@ -267,18 +267,38 @@ public class PrivateBank implements Bank {
     @Override
     public void removeTransaction(String account, Transaction transaction) throws TransactionDoesNotExistException {
         System.out.println("Removing transaction <" + transaction.toString().replace("\n", "") + "> from account <" + account + "> in bank <" + name + ">");
-        if (!accountsToTransactions.get(account).contains(transaction))
-            throw new TransactionDoesNotExistException("THIS TRANSACTION DOES NOT EXISTS!\n");
-        else {
-            List<Transaction> transactionsList = new ArrayList<>(accountsToTransactions.get(account));
-            transactionsList.remove(transaction);
-            accountsToTransactions.put(account, transactionsList);
 
-            Path path = Path.of(PrivateBank.this.getFullPath() + "/" + account + ".json");
-            if (Files.notExists(path))
+        if (transaction instanceof Payment payment) {
+            payment.setIncomingInterest(PrivateBank.this.incomingInterest);
+            payment.setOutgoingInterest(PrivateBank.this.outgoingInterest);
+
+            if (!accountsToTransactions.get(account).contains(transaction))
+                throw new TransactionDoesNotExistException("THIS TRANSACTION DOES NOT EXISTS!\n");
+            else {
+                List<Transaction> transactionsList = new ArrayList<>(accountsToTransactions.get(account));
+                transactionsList.remove(transaction);
+                accountsToTransactions.put(account, transactionsList);
+
+//            Path path = Path.of(PrivateBank.this.getFullPath() + "/" + account + ".json");
+//            if (Files.notExists(path))
                 writeAccount(account);
 
-            System.out.println("=> SUCCESS!");
+                System.out.println("=> SUCCESS!");
+            }
+        } else {
+            if (!accountsToTransactions.get(account).contains(transaction))
+                throw new TransactionDoesNotExistException("THIS TRANSACTION DOES NOT EXISTS!\n");
+            else {
+                List<Transaction> transactionsList = new ArrayList<>(accountsToTransactions.get(account));
+                transactionsList.remove(transaction);
+                accountsToTransactions.put(account, transactionsList);
+
+//            Path path = Path.of(PrivateBank.this.getFullPath() + "/" + account + ".json");
+//            if (Files.notExists(path))
+                writeAccount(account);
+
+                System.out.println("=> SUCCESS!");
+            }
         }
 
     }
@@ -295,7 +315,7 @@ public class PrivateBank implements Bank {
             payment.setIncomingInterest(PrivateBank.this.incomingInterest);
             payment.setOutgoingInterest(PrivateBank.this.outgoingInterest);
         }
-        System.out.println("Checking account <" + account + "> contains the transaction <" + transaction.toString().replace("\n", "") + "> : " + accountsToTransactions.get(account).contains(transaction) + "\n");
+//        System.out.println("Checking account <" + account + "> contains the transaction <" + transaction.toString().replace("\n", "") + "> : " + accountsToTransactions.get(account).contains(transaction) + "\n");
         return accountsToTransactions.get(account).contains(transaction);
     }
 
@@ -375,6 +395,8 @@ public class PrivateBank implements Bank {
      * @param account the account to be written
      */
     private void writeAccount(String account) {
+
+        Path path = Path.of(PrivateBank.this.getFullPath() + "/" + account + ".json");
 
         try (FileWriter file = new FileWriter(getFullPath() + "/" + account + ".json")) {
 
