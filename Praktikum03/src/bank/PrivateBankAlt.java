@@ -22,7 +22,7 @@ public class PrivateBankAlt implements Bank {
     /**
      * The interest (positive value in percent, 0 to 1) accrues on a withdrawal
      */
-    private double outcomingInterest;
+    private double outgoingInterest;
 
     /**
      * Links accounts to transactions so that 0 to N transactions can be assigned to
@@ -47,28 +47,28 @@ public class PrivateBankAlt implements Bank {
     }
 
 
-    public void setOutcomingInterest(double outcomingInterest) {
-        this.outcomingInterest = outcomingInterest;
+    public void setOutgoingInterest(double outgoingInterest) {
+        this.outgoingInterest = outgoingInterest;
     }
-    public double getOutcomingInterest() {
-        return outcomingInterest;
+    public double getOutgoingInterest() {
+        return outgoingInterest;
     }
 
 
     /**
      * Constructor with three attribute
      */
-    public PrivateBankAlt(String newName, double newIncomingInterest, double newOutcomingInterest) {
+    public PrivateBankAlt(String newName, double newIncomingInterest, double newoutgoingInterest) {
         this.name = newName;
         this.incomingInterest = newIncomingInterest;
-        this.outcomingInterest = newOutcomingInterest;
+        this.outgoingInterest = newoutgoingInterest;
     }
 
     /**
      * Copy Constructor
      */
     public PrivateBankAlt(PrivateBankAlt newPrivateBankAlt) {
-        this(newPrivateBankAlt.name, newPrivateBankAlt.incomingInterest, newPrivateBankAlt.outcomingInterest);
+        this(newPrivateBankAlt.name, newPrivateBankAlt.incomingInterest, newPrivateBankAlt.outgoingInterest);
         this.accountsToTransactions = newPrivateBankAlt.accountsToTransactions;
     }
 
@@ -85,12 +85,12 @@ public class PrivateBankAlt implements Bank {
             for (Transaction transaction : transactionsList)
                 str.append("\t\t").append(transaction);
         }
-        return "Name: " + name + "\nIncoming Interest: " + incomingInterest + "\nOutcoming Interest: " + outcomingInterest + "\n" + str;
+        return "Name: " + name + "\nIncoming Interest: " + incomingInterest + "\noutgoing Interest: " + outgoingInterest + "\n" + str;
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof PrivateBankAlt privateBankAlt)
-            return (name.equals(privateBankAlt.name) && incomingInterest == privateBankAlt.incomingInterest && outcomingInterest == privateBankAlt.outcomingInterest && accountsToTransactions.equals(privateBankAlt.accountsToTransactions));
+            return (name.equals(privateBankAlt.name) && incomingInterest == privateBankAlt.incomingInterest && outgoingInterest == privateBankAlt.outgoingInterest && accountsToTransactions.equals(privateBankAlt.accountsToTransactions));
         return false;
     }
 
@@ -128,7 +128,7 @@ public class PrivateBankAlt implements Bank {
             for (Transaction valueOfTransactions : transactions)
                 if (valueOfTransactions instanceof Payment payment) {
                     payment.setIncomingInterest(PrivateBankAlt.this.incomingInterest);
-                    payment.setOutcomingInterest(PrivateBankAlt.this.outcomingInterest);
+                    payment.setOutgoingInterest(PrivateBankAlt.this.outgoingInterest);
                 }
             accountsToTransactions.put(account, transactions);
                 System.out.println("=> SUCCESS!\n");
@@ -154,7 +154,7 @@ public class PrivateBankAlt implements Bank {
             else {
                 if (transaction instanceof Payment payment) {
                     payment.setIncomingInterest(PrivateBankAlt.this.incomingInterest);
-                    payment.setOutcomingInterest(PrivateBankAlt.this.outcomingInterest);
+                    payment.setOutgoingInterest(PrivateBankAlt.this.outgoingInterest);
                 }
                 List<Transaction> transactionsList = new ArrayList<>(accountsToTransactions.get(account));
                 transactionsList.add(transaction);
@@ -175,6 +175,10 @@ public class PrivateBankAlt implements Bank {
     @Override
     public void removeTransaction(String account, Transaction transaction) throws TransactionDoesNotExistException {
         System.out.println("Removing transaction <" + transaction.toString().replace("\n", "") + "> from account <" + account + "> in bank <" + name + ">");
+        if (transaction instanceof Payment payment) {
+            payment.setIncomingInterest(PrivateBankAlt.this.incomingInterest);
+            payment.setOutgoingInterest(PrivateBankAlt.this.outgoingInterest);
+        }
         if (!accountsToTransactions.get(account).contains(transaction))
             throw new TransactionDoesNotExistException("THIS TRANSACTION DOES NOT EXISTS!\n");
         else {
@@ -196,7 +200,7 @@ public class PrivateBankAlt implements Bank {
     public boolean containsTransaction(String account, Transaction transaction) {
         if (transaction instanceof Payment payment) {
             payment.setIncomingInterest(PrivateBankAlt.this.incomingInterest);
-            payment.setOutcomingInterest(PrivateBankAlt.this.outcomingInterest);
+            payment.setOutgoingInterest(PrivateBankAlt.this.outgoingInterest);
         }
         System.out.println("Checking account <" + account + "> contains the transaction <" + transaction.toString().replace("\n", "") + "> : " + accountsToTransactions.get(account).contains(transaction) + "\n");
         return accountsToTransactions.get(account).contains(transaction);

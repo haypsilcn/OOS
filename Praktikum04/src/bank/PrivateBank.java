@@ -262,11 +262,9 @@ public class PrivateBank implements Bank {
                 List<Transaction> transactionsList = new ArrayList<>(accountsToTransactions.get(account));
                 transactionsList.add(transaction);
                 accountsToTransactions.put(account, transactionsList);
-
-
-                    writeAccount(account);
-
+                writeAccount(account);
                 System.out.println("=> SUCCESS!");
+                transactionsList.clear();
             }
         }
     }
@@ -294,6 +292,7 @@ public class PrivateBank implements Bank {
             accountsToTransactions.put(account, transactionsList);
             writeAccount(account);
             System.out.println("=> SUCCESS!\n");
+            transactionsList.clear();
         }
     }
 
@@ -459,8 +458,6 @@ public class PrivateBank implements Bank {
             } catch (TransactionAlreadyExistException | AccountDoesNotExistException e) {
                 System.out.println(e);
             }
-
         }
-
     }
 }
