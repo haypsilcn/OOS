@@ -59,10 +59,10 @@ public class PrivateBank implements Bank {
     /**
      * Constructor with three attribute
      */
-    public PrivateBank(String newName, double newIncomingInterest, double newoutgoingInterest) {
+    public PrivateBank(String newName, double newIncomingInterest, double newOutgoingInterest) {
         this.name = newName;
         this.incomingInterest = newIncomingInterest;
-        this.outgoingInterest = newoutgoingInterest;
+        this.outgoingInterest = newOutgoingInterest;
 
     }
 

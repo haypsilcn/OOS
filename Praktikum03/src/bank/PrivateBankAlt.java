@@ -58,10 +58,10 @@ public class PrivateBankAlt implements Bank {
     /**
      * Constructor with three attribute
      */
-    public PrivateBankAlt(String newName, double newIncomingInterest, double newoutgoingInterest) {
+    public PrivateBankAlt(String newName, double newIncomingInterest, double newOutgoingInterest) {
         this.name = newName;
         this.incomingInterest = newIncomingInterest;
-        this.outgoingInterest = newoutgoingInterest;
+        this.outgoingInterest = newOutgoingInterest;
     }
 
     /**

@@ -38,7 +38,7 @@ public class Payment extends Transaction {
     /**
      * @return den aktuellen Wert von outgoingInterest
      */
-    public double getoutgoingInterest () {
+    public double getOutgoingInterest () {
         return this.outgoingInterest;
     }
 

@@ -10,7 +10,7 @@ public class Payment extends Transaction {
     /**
      * die Zinsen (positiver Wert in Prozent, 0 bis 1) bei einer Auszahlung anfallen
      */
-    private double outcomingInterest;
+    private double outgoingInterest;
 
     /**
      * Legt das Attribut incomingInterest fest
@@ -28,18 +28,18 @@ public class Payment extends Transaction {
     }
 
     /**
-     * Legt das Attribut outcomingInterest fest
-     * @param newOutcomingInterest neuer Wert für outcomingInterest
+     * Legt das Attribut outgoingInterest fest
+     * @param newOutgoingInterest neuer Wert für outgoingInterest
      */
-    public void setOutcomingInterest (double newOutcomingInterest) {
-        this.outcomingInterest = newOutcomingInterest;
+    public void setOutgoingInterest (double newOutgoingInterest) {
+        this.outgoingInterest = newOutgoingInterest;
     }
 
     /**
-     * @return den aktuellen Wert von outcomingInterest
+     * @return den aktuellen Wert von outgoingInterest
      */
-    public double getOutcomingInterest () {
-        return this.outcomingInterest;
+    public double getOutgoingInterest () {
+        return this.outgoingInterest;
     }
 
     /**
@@ -58,12 +58,12 @@ public class Payment extends Transaction {
      * @param newDescription Wert für description
      * @param newAmount Wert für amount
      * @param newIncomingInterest Wert für incomingInterest
-     * @param newOutcomingInterest Wert für outcomingInterest
+     * @param newOutgoingInterest Wert für outgoingInterest
      */
-    public Payment (String newDate, String newDescription, double newAmount, double newIncomingInterest, double newOutcomingInterest) {
+    public Payment (String newDate, String newDescription, double newAmount, double newIncomingInterest, double newOutgoingInterest) {
         this(newDate, newDescription, newAmount);
         this.incomingInterest = newIncomingInterest;
-        this.outcomingInterest = newOutcomingInterest;
+        this.outgoingInterest = newOutgoingInterest;
     }
 
     /**
@@ -71,7 +71,7 @@ public class Payment extends Transaction {
      * @param newPayment neue Objekt festzulegen
      */
     public Payment (Payment newPayment) {
-        this(newPayment.date, newPayment.description, newPayment.amount, newPayment.incomingInterest, newPayment.outcomingInterest);
+        this(newPayment.date, newPayment.description, newPayment.amount, newPayment.incomingInterest, newPayment.outgoingInterest);
     }
 
     /**
@@ -83,7 +83,7 @@ public class Payment extends Transaction {
             return (amount - incomingInterest * amount);
         }
         else
-            return (amount + outcomingInterest * amount);
+            return (amount + outgoingInterest * amount);
     }
 
     /**
@@ -91,7 +91,7 @@ public class Payment extends Transaction {
      */
     @Override
     public String toString() {
-        return super.toString() + ", Incoming Interest: " + incomingInterest + ", Outcoming Interest: " + outcomingInterest + "\n";
+        return super.toString() + ", Incoming Interest: " + incomingInterest + ", outgoing Interest: " + outgoingInterest + "\n";
     }
 
     /**
@@ -102,7 +102,7 @@ public class Payment extends Transaction {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Payment payment)
-            return (super.equals(payment) && incomingInterest == payment.incomingInterest && outcomingInterest == payment.outcomingInterest);
+            return (super.equals(payment) && incomingInterest == payment.incomingInterest && outgoingInterest == payment.outgoingInterest);
         return false;
     }
 }
