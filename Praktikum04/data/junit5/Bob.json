@@ -1,8 +1,8 @@
 [{
-  "CLASSNAME": "OutgoingTransfer",
+  "CLASSNAME": "Payment",
   "INSTANCE": {
-    "sender": "Elixir",
-    "recipient": "Hagen",
+    "incomingInterest": 0.0,
+    "outgoingInterest": 0.12,
     "date": "30.07.2020",
     "amount": 1890.0,
     "description": "OutgoingTransfer to Hagen"

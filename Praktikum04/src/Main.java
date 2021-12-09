@@ -1,9 +1,5 @@
 import bank.*;
-
-import bank.exceptions.AccountAlreadyExistsException;
-import bank.exceptions.AccountDoesNotExistException;
-import bank.exceptions.TransactionAlreadyExistException;
-import bank.exceptions.TransactionDoesNotExistException;
+import bank.exceptions.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,7 +58,6 @@ public class Main {
         System.out.println("\n" + deutscheBank);
 
 
-/*
         PrivateBank sparkasse = new PrivateBank("Sparkasse", "Sparkasse", 0.11, 0.05);
         try {
             sparkasse.addTransaction("Hagen", new Payment("19.01.2011", "Payment", -789, 0.9, 0.25));
@@ -80,6 +75,6 @@ public class Main {
 
 
         PrivateBank aachenerBank = new PrivateBank("Aachener Bank", "Aachen", 0.11, 0.26);
-        System.out.println(aachenerBank);*/
+        System.out.println(aachenerBank);
     }
 }

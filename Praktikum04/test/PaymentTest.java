@@ -44,6 +44,7 @@ public class PaymentTest {
         assertEquals(payment2.getOutgoingInterest(), copyPayment.getOutgoingInterest());
     }
 
+
     @Test
     public void calculateIncomingInterestTest() {
         double expected = payment1.getAmount() - payment1.getIncomingInterest() * payment1.getAmount();

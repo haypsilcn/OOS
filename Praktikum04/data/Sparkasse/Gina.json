@@ -1,0 +1,28 @@
+[{
+  "CLASSNAME": "Payment",
+  "INSTANCE": {
+    "incomingInterest": 0.11,
+    "outgoingInterest": 0.05,
+    "date": "10.01.1988",
+    "amount": 1500.0,
+    "description": "Deposit; 1500"
+  }
+},{
+  "CLASSNAME": "OutgoingTransfer",
+  "INSTANCE": {
+    "sender": "Gina",
+    "recipient": "Dinesh",
+    "date": "09.04.2013",
+    "amount": 150.0,
+    "description": "Outgoing Transfer; Gina -\u003e Dinesh; 150"
+  }
+},{
+  "CLASSNAME": "Payment",
+  "INSTANCE": {
+    "incomingInterest": 0.11,
+    "outgoingInterest": 0.05,
+    "date": "10.04.2005",
+    "amount": 770.0,
+    "description": "Deposit; 770"
+  }
+}]
