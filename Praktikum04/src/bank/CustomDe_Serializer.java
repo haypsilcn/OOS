@@ -20,7 +20,7 @@ public class CustomDe_Serializer implements JsonSerializer<Transaction>, JsonDes
                     jsonObject.get("outgoingInterest").getAsDouble());
 
         else if (jsonObject.get("CLASSNAME").getAsString().equals("IncomingTransfer"))
-            new IncomingTransfer(
+            return new IncomingTransfer(
                     jsonObject.get("date").getAsString(),
                     jsonObject.get("description").getAsString(),
                     jsonObject.get("amount").getAsDouble(),
@@ -35,7 +35,6 @@ public class CustomDe_Serializer implements JsonSerializer<Transaction>, JsonDes
                     jsonObject.get("sender").getAsString(),
                     jsonObject.get("recipient").getAsString()
             );
-        return null;
     }
 
     @Override
