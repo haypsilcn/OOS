@@ -252,20 +252,16 @@ public class PrivateBank implements Bank {
         if (!accountsToTransactions.containsKey(account))
             throw new AccountDoesNotExistException("=> FAILED! ACCOUNT <" + account + "> DOES NOT EXISTS!\n");
         else {
-            if (accountsToTransactions.get(account).contains(transaction))
+            if (containsTransaction(account, transaction))
                 throw new TransactionAlreadyExistException("=> FAILED! THIS TRANSACTION ALREADY EXISTS!\n");
             else {
-                if (transaction instanceof Payment payment) {
-                    payment.setIncomingInterest(PrivateBank.this.incomingInterest);
-                    payment.setOutgoingInterest(PrivateBank.this.outgoingInterest);
-                }
                 List<Transaction> transactionsList = new ArrayList<>(accountsToTransactions.get(account));
                 transactionsList.add(transaction);
                 accountsToTransactions.put(account, transactionsList);
                 writeAccount(account);
                 System.out.println("=> SUCCESS!");
-                transactionsList.clear();
             }
+
         }
     }
 
@@ -280,11 +276,7 @@ public class PrivateBank implements Bank {
     @Override
     public void removeTransaction(String account, Transaction transaction) throws TransactionDoesNotExistException {
         System.out.println("Removing transaction <" + transaction.toString().replace("\n", "") + "> from account <" + account + "> in bank <" + name + ">");
-        if (transaction instanceof Payment payment) {
-            payment.setIncomingInterest(PrivateBank.this.incomingInterest);
-            payment.setOutgoingInterest(PrivateBank.this.outgoingInterest);
-        }
-        if (!accountsToTransactions.get(account).contains(transaction))
+        if (!containsTransaction(account, transaction))
             throw new TransactionDoesNotExistException("=> FAILED! THIS TRANSACTION DOES NOT EXISTS!\n");
         else {
             List<Transaction> transactionsList = new ArrayList<>(accountsToTransactions.get(account));
@@ -292,7 +284,6 @@ public class PrivateBank implements Bank {
             accountsToTransactions.put(account, transactionsList);
             writeAccount(account);
             System.out.println("=> SUCCESS!\n");
-            transactionsList.clear();
         }
     }
 
@@ -308,7 +299,6 @@ public class PrivateBank implements Bank {
             payment.setIncomingInterest(PrivateBank.this.incomingInterest);
             payment.setOutgoingInterest(PrivateBank.this.outgoingInterest);
         }
-        System.out.println("Checking account <" + account + "> contains the transaction <" + transaction.toString().replace("\n", "") + ">\n=> " + accountsToTransactions.get(account).contains(transaction) + "\n");
         return accountsToTransactions.get(account).contains(transaction);
     }
 
@@ -335,7 +325,6 @@ public class PrivateBank implements Bank {
      */
     @Override
     public List<Transaction> getTransactions(String account) {
-        System.out.println("Transactions list of account <" + account + "> in bank <" + name + ">\n" + accountsToTransactions.get(account).toString().replace("[", "\t\t").replace("]", "").replace("\n, ", "\n\t\t"));
         return accountsToTransactions.get(account);
     }
 

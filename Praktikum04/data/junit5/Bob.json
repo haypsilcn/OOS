@@ -1,8 +1,8 @@
 [{
-  "CLASSNAME": "Payment",
+  "CLASSNAME": "IncomingTransfer",
   "INSTANCE": {
-    "incomingInterest": 0.0,
-    "outgoingInterest": 0.12,
+    "sender": "Tom",
+    "recipient": "Bob",
     "date": "30.07.2020",
     "amount": 1890.0,
     "description": "OutgoingTransfer to Hagen"

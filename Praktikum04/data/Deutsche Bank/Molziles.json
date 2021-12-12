@@ -34,22 +34,4 @@
     "amount": -789.0,
     "description": "Payment"
   }
-},{
-  "CLASSNAME": "Payment",
-  "INSTANCE": {
-    "incomingInterest": 0.25,
-    "outgoingInterest": 0.3,
-    "date": "19.01.2011",
-    "amount": -789.0,
-    "description": "Payment"
-  }
-},{
-  "CLASSNAME": "Payment",
-  "INSTANCE": {
-    "incomingInterest": 0.25,
-    "outgoingInterest": 0.3,
-    "date": "19.01.2011",
-    "amount": -789.0,
-    "description": "Payment"
-  }
 }]

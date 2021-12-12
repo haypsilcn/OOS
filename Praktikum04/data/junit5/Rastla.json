@@ -1,16 +1,7 @@
 [{
-  "CLASSNAME": "Payment",
-  "INSTANCE": {
-    "incomingInterest": 0.0,
-    "outgoingInterest": 0.12,
-    "date": "23.09.1897",
-    "amount": -2500.0,
-    "description": "Payment 02"
-  }
-},{
   "CLASSNAME": "OutgoingTransfer",
   "INSTANCE": {
-    "sender": "Elixir",
+    "sender": "Rastla",
     "recipient": "Hagen",
     "date": "30.07.2020",
     "amount": 1890.0,

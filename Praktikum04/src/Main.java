@@ -52,11 +52,10 @@ public class Main {
 
         try {
             deutscheBank.addTransaction("Molziles", new Payment("19.01.2011", "Payment", -789, 0.9, 0.25));
-        } catch (AccountDoesNotExistException | TransactionAlreadyExistException e) {
+        } catch (TransactionAlreadyExistException e) {
             System.out.println(e);
         }
         System.out.println("\n" + deutscheBank);
-
 
         PrivateBank sparkasse = new PrivateBank("Sparkasse", "Sparkasse", 0.11, 0.05);
         try {

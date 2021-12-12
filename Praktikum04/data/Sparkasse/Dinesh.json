@@ -1,22 +1,4 @@
 [{
-  "CLASSNAME": "Payment",
-  "INSTANCE": {
-    "incomingInterest": 0.11,
-    "outgoingInterest": 0.05,
-    "date": "05.12.2007",
-    "amount": 2067.0,
-    "description": "Deposit; 1500"
-  }
-},{
-  "CLASSNAME": "IncomingTransfer",
-  "INSTANCE": {
-    "sender": "Gina",
-    "recipient": "Dinesh",
-    "date": "09.04.2013",
-    "amount": 150.0,
-    "description": "Incoming Transfer; Gina -\u003e Dinesh; 150"
-  }
-},{
   "CLASSNAME": "OutgoingTransfer",
   "INSTANCE": {
     "sender": "Dinesh",
