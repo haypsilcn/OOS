@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -217,5 +218,41 @@ public class PrivateBankTest {
                         new IncomingTransfer("03.03.2000", "IncomingTransfer from Adam to Tim; 80", 80, "Adam", "Tim"))
                 , privateBank.getTransactionsSorted("Tim", true));
 
+    }
+
+    @Test @Order(18)
+    @DisplayName("Get a list of all accounts")
+    public void getAllAccounts() {
+        List<String> expected = new ArrayList<>();
+        expected.add("Hagen");
+        expected.add("Bob");
+        expected.add("Dinesh");
+        expected.add("Tim");
+        expected.add("Harsh");
+        expected.add("Narsha");
+        expected.add("Klaus");
+        expected.add("Rastla");
+
+        assertEquals(expected, privateBank.getAllAccounts());
+    }
+
+    @ParameterizedTest
+    @DisplayName("Delete a valid account")
+    @Order(19)
+    @ValueSource(strings = {"Bob", "Narsha", "Tim", "Hagen"})
+    public void deleteValidAccount(String account) {
+        assertDoesNotThrow(
+                () -> privateBank.deleteAccount(account)
+        );
+    }
+
+    @ParameterizedTest
+    @DisplayName("Delete an invalid account")
+    @Order(20)
+    @ValueSource(strings = {"Gina", "Natasha", "Steve"})
+    public void deleteInvalidAccount(String account) {
+        Exception e = assertThrows(AccountDoesNotExistException.class,
+                () -> privateBank.deleteAccount(account));
+        System.out.print(e.getMessage());
     }
 }

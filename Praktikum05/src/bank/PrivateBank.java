@@ -457,7 +457,7 @@ public class PrivateBank implements Bank {
      * @throws IOException
      */
     public void deleteAccount(String account) throws AccountDoesNotExistException, IOException {
-        System.out.print("\nDelete account <" + account + "> from bank <" + this.getName() + ">");
+        System.out.print("\nDelete account <" + account + "> from bank <" + this.getName() + "> ");
         if (!accountsToTransactions.containsKey(account))
             throw new AccountDoesNotExistException("=> FAILED! ACCOUNT <" + account + "> DOES NOT EXISTS!\n");
         else {
@@ -473,7 +473,7 @@ public class PrivateBank implements Bank {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public List<String> getAllAccounts() {
