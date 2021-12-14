@@ -1,5 +1,9 @@
-import bank.*;
-import bank.exceptions.*;
+package bank;
+
+import bank.exceptions.AccountAlreadyExistsException;
+import bank.exceptions.AccountDoesNotExistException;
+import bank.exceptions.TransactionAlreadyExistException;
+import bank.exceptions.TransactionDoesNotExistException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -239,7 +243,7 @@ public class PrivateBankTest {
     @ParameterizedTest
     @DisplayName("Delete a valid account")
     @Order(19)
-    @ValueSource(strings = {"Bob", "Narsha", "Tim", "Hagen"})
+    @ValueSource(strings = {"Tim", "Hagen", "Bob", "Narsha"})
     public void deleteValidAccount(String account) {
         assertDoesNotThrow(
                 () -> privateBank.deleteAccount(account)

@@ -1,10 +1,7 @@
 package bank;
 
-import bank.exceptions.AccountAlreadyExistsException;
-import bank.exceptions.AccountDoesNotExistException;
-import bank.exceptions.TransactionAlreadyExistException;
-import bank.exceptions.TransactionDoesNotExistException;
 import com.google.gson.*;
+import bank.exceptions.*;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -379,7 +376,6 @@ public class PrivateBank implements Bank {
     private void writeAccount(String account) {
 
         try (FileWriter file = new FileWriter(getFullPath() + "/" + account + ".json")) {
-
             file.write("[");
 
             for (Transaction transaction : accountsToTransactions.get(account)) {
@@ -447,14 +443,15 @@ public class PrivateBank implements Bank {
             } catch (TransactionAlreadyExistException | AccountDoesNotExistException e) {
                 System.out.println(e);
             }
+
         }
     }
 
     /**
-     *
-     * @param account
-     * @throws AccountDoesNotExistException
-     * @throws IOException
+     * delete an account in accountsToTransactions and in data system
+     * @param account account to be deleted
+     * @throws AccountDoesNotExistException when account is not valid
+     * @throws IOException if account.json is not exist
      */
     public void deleteAccount(String account) throws AccountDoesNotExistException, IOException {
         System.out.print("\nDelete account <" + account + "> from bank <" + this.getName() + "> ");
@@ -473,8 +470,8 @@ public class PrivateBank implements Bank {
     }
 
     /**
-     *
-     * @return
+     * show all accounts in accountsToTransactions
+     * @return a list of all accounts
      */
     public List<String> getAllAccounts() {
         Set<String> setKey = accountsToTransactions.keySet();
