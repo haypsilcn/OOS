@@ -437,6 +437,7 @@ public class PrivateBank implements Bank {
                         OutgoingTransfer outgoingTransfer = customGson.fromJson(str, OutgoingTransfer.class);
                         PrivateBank.this.addTransaction(accountName, outgoingTransfer);
                     }
+                    reader.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -461,6 +462,8 @@ public class PrivateBank implements Bank {
             accountsToTransactions.remove(account);
             Path path = Path.of(this.getFullPath() + "/" + account + ".json");
             try {
+               /* if (Files.exists(path))
+                    Files.delete(path);*/
                 Files.deleteIfExists(path);
             } catch (IOException e) {
                 e.printStackTrace();

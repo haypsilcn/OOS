@@ -192,7 +192,7 @@ public class PrivateBankTest {
     @Order(14)
     @CsvSource({"Klaus, 0", "Tim, 80", "Hagen, 1006.32"})
     public void getAccountBalanceTest(String account, double balance) {
-        System.out.println("Expected <" + balance + "> in account <" + account + ">");
+        System.out.println("Expected balance <" + balance + "> in account <" + account + ">");
         assertEquals(balance, privateBank.getAccountBalance(account));
     }
 
@@ -243,7 +243,7 @@ public class PrivateBankTest {
     @ParameterizedTest
     @DisplayName("Delete a valid account")
     @Order(19)
-    @ValueSource(strings = {"Tim", "Hagen", "Bob", "Narsha"})
+    @ValueSource(strings = {"Bob", "Narsha", "Tim", "Hagen"})
     public void deleteValidAccount(String account) {
         assertDoesNotThrow(
                 () -> privateBank.deleteAccount(account)
