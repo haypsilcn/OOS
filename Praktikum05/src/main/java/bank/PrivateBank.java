@@ -92,7 +92,7 @@ public class PrivateBank implements Bank {
     /**
      * Constructor with four attributes
      */
-    public PrivateBank(String newName, String newDirectoryName, double newIncomingInterest, double newOutgoingInterest) throws AccountAlreadyExistsException {
+    public PrivateBank(String newName, String newDirectoryName, double newIncomingInterest, double newOutgoingInterest) {
         this.name = newName;
         this.directoryName = newDirectoryName;
         this.incomingInterest = newIncomingInterest;
@@ -113,7 +113,7 @@ public class PrivateBank implements Bank {
                 readAccounts();
                 System.out.println("FINISHED reading account(s) for " + PrivateBank.this.getName() + "\n");
             }
-        } catch (IOException e) {
+        } catch (IOException | AccountAlreadyExistsException e) {
             System.out.println("Failed to create directory for " + PrivateBank.this.getName() + "!");
         }
 
@@ -176,7 +176,7 @@ public class PrivateBank implements Bank {
      * @throws AccountAlreadyExistsException if the account ALREADY EXISTS
      */
     @Override
-    public void createAccount(String account) throws AccountAlreadyExistsException {
+    public void createAccount(String account) throws AccountAlreadyExistsException, IOException {
         Path path = Path.of(PrivateBank.this.getFullPath() + "/" + account + ".json");
 
         if (Files.exists(path)) {
@@ -205,7 +205,7 @@ public class PrivateBank implements Bank {
      * @throws AccountAlreadyExistsException if the account ALREADY EXISTS
      */
     @Override
-    public void createAccount(String account, List<Transaction> transactions) throws AccountAlreadyExistsException {
+    public void createAccount(String account, List<Transaction> transactions) throws AccountAlreadyExistsException, IOException {
         Path path = Path.of(PrivateBank.this.getFullPath() + "/" + account + ".json");
         String transactionsString = transactions.toString().replaceAll("[]]|[\\[]", "").replace("\n, ", "\n\t\t");
 
@@ -244,7 +244,7 @@ public class PrivateBank implements Bank {
      * @throws TransactionAlreadyExistException if the transaction ALREADY EXISTS
      */
     @Override
-    public void addTransaction(String account, Transaction transaction) throws TransactionAlreadyExistException, AccountDoesNotExistException {
+    public void addTransaction(String account, Transaction transaction) throws TransactionAlreadyExistException, AccountDoesNotExistException, IOException {
         System.out.println("Adding new transaction <" + transaction.toString().replace("\n", "") + "> to account <" + account + "> in bank <" + name + ">");
         if (!accountsToTransactions.containsKey(account))
             throw new AccountDoesNotExistException("=> FAILED! ACCOUNT <" + account + "> DOES NOT EXISTS!\n");
@@ -271,7 +271,7 @@ public class PrivateBank implements Bank {
      * @throws TransactionDoesNotExistException if the transaction cannot be found
      */
     @Override
-    public void removeTransaction(String account, Transaction transaction) throws TransactionDoesNotExistException {
+    public void removeTransaction(String account, Transaction transaction) throws TransactionDoesNotExistException, IOException {
         System.out.println("Removing transaction <" + transaction.toString().replace("\n", "") + "> from account <" + account + "> in bank <" + name + ">");
         if (!containsTransaction(account, transaction))
             throw new TransactionDoesNotExistException("=> FAILED! THIS TRANSACTION DOES NOT EXISTS!\n");
@@ -373,9 +373,9 @@ public class PrivateBank implements Bank {
      *
      * @param account the account to be written
      */
-    private void writeAccount(String account) {
-
-        try (FileWriter file = new FileWriter(getFullPath() + "/" + account + ".json")) {
+    private void writeAccount(String account) throws IOException {
+        FileWriter file = new FileWriter(getFullPath() + "/" + account + ".json");
+        try  {
             file.write("[");
 
             for (Transaction transaction : accountsToTransactions.get(account)) {
@@ -390,10 +390,12 @@ public class PrivateBank implements Bank {
             }
 
             file.write("]");
+            file.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        file.close();
     }
 
     /**
@@ -437,8 +439,9 @@ public class PrivateBank implements Bank {
                         OutgoingTransfer outgoingTransfer = customGson.fromJson(str, OutgoingTransfer.class);
                         PrivateBank.this.addTransaction(accountName, outgoingTransfer);
                     }
-                    reader.close();
+
                 }
+                reader.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (TransactionAlreadyExistException | AccountDoesNotExistException e) {
@@ -452,7 +455,6 @@ public class PrivateBank implements Bank {
      * delete an account in accountsToTransactions and in data system
      * @param account account to be deleted
      * @throws AccountDoesNotExistException when account is not valid
-     * @throws IOException if account.json is not exist
      */
     public void deleteAccount(String account) throws AccountDoesNotExistException, IOException {
         System.out.print("\nDelete account <" + account + "> from bank <" + this.getName() + "> ");
@@ -461,13 +463,7 @@ public class PrivateBank implements Bank {
         else {
             accountsToTransactions.remove(account);
             Path path = Path.of(this.getFullPath() + "/" + account + ".json");
-            try {
-               /* if (Files.exists(path))
-                    Files.delete(path);*/
-                Files.deleteIfExists(path);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Files.deleteIfExists(path);
             System.out.println("=> SUCCESS!");
         }
     }
