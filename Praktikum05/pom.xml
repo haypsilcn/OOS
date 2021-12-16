@@ -84,11 +84,11 @@
             <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <artifactId>gson</artifactId>
             <groupId>com.google.code.gson</groupId>
             <version>2.8.9</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -123,7 +123,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.oos.praktikum05/com.oos.praktikum05.HelloApplication</mainClass>
+                            <mainClass>com.oos.praktikum05/com.oos.praktikum05.MainApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

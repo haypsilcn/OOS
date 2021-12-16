@@ -311,7 +311,7 @@ public class PrivateBank implements Bank {
         for (Transaction transaction : accountsToTransactions.get(account))
             balance = balance + transaction.calculate();
         System.out.println("Balance of account <" + account + "> in bank <" + name + "> : " + (double) Math.round(balance * 100) / 100 + "\n");
-        return balance;
+        return (double) Math.round(balance * 100) / 100;
     }
 
     /**

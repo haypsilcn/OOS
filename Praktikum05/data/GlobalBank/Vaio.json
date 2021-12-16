@@ -1,0 +1,10 @@
+[{
+  "CLASSNAME": "OutgoingTransfer",
+  "INSTANCE": {
+    "sender": "Vaio",
+    "recipient": "Booth",
+    "date": "15.04.1990",
+    "amount": 185.0,
+    "description": "OutgoingTransfer"
+  }
+}]

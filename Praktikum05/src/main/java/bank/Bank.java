@@ -38,7 +38,7 @@ public interface Bank {
      * @throws TransactionAlreadyExistException if the transaction already exists
      */
     void addTransaction(String account, Transaction transaction)
-            throws TransactionAlreadyExistException, AccountDoesNotExistException;
+            throws TransactionAlreadyExistException, AccountDoesNotExistException, IOException;
 
     /**
      * Removes a transaction from an account. If the transaction does not exist, an exception is
@@ -49,7 +49,7 @@ public interface Bank {
      * @throws TransactionDoesNotExistException if the transaction cannot be found
      */
     void removeTransaction(String account, Transaction transaction)
-            throws TransactionDoesNotExistException;
+            throws TransactionDoesNotExistException, IOException;
 
     /**
      * Checks whether the specified transaction for a given account exists.

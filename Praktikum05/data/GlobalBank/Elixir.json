@@ -1,0 +1,46 @@
+[{
+  "CLASSNAME": "Payment",
+  "INSTANCE": {
+    "incomingInterest": 0.12,
+    "outgoingInterest": 0.09,
+    "date": "22.06.1998",
+    "amount": 435.0,
+    "description": "Payment"
+  }
+},{
+  "CLASSNAME": "OutgoingTransfer",
+  "INSTANCE": {
+    "sender": "Elixir",
+    "recipient": "Booth",
+    "date": "30.07.2020",
+    "amount": 1890.0,
+    "description": "OutgoingTransfer"
+  }
+},{
+  "CLASSNAME": "Payment",
+  "INSTANCE": {
+    "incomingInterest": 0.12,
+    "outgoingInterest": 0.09,
+    "date": "19.01.2011",
+    "amount": -789.0,
+    "description": "Payment"
+  }
+},{
+  "CLASSNAME": "Payment",
+  "INSTANCE": {
+    "incomingInterest": 0.12,
+    "outgoingInterest": 0.09,
+    "date": "1.1.111",
+    "amount": 1111.0,
+    "description": "1111"
+  }
+},{
+  "CLASSNAME": "Payment",
+  "INSTANCE": {
+    "incomingInterest": 0.12,
+    "outgoingInterest": 0.09,
+    "date": "1.1.1111",
+    "amount": 11.0,
+    "description": "111"
+  }
+}]

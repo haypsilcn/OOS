@@ -11,7 +11,6 @@ module com.oos.praktikum05 {
     requires eu.hansolo.tilesfx;
     requires com.google.gson;
 
-
     opens com.oos.praktikum05 to javafx.fxml;
     opens bank;
     opens bank.exceptions;
