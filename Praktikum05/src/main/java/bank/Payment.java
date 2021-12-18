@@ -79,11 +79,13 @@ public class Payment extends Transaction {
      */
     @Override
     public double calculate() {
-        if (amount >= 0) {
-            return (amount - incomingInterest * amount);
-        }
+        double result;
+        if (amount >= 0)
+            result = amount - incomingInterest * amount;
         else
-            return (amount + outgoingInterest * amount);
+            result = amount + outgoingInterest * amount;
+        return (double) Math.round(result * 100) /100;
+
     }
 
     /**

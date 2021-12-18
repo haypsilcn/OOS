@@ -297,6 +297,7 @@ public class AccountController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         backButton.setOnMouseClicked(mouseEvent -> {
             try {
                 root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main-view.fxml")));
@@ -304,6 +305,7 @@ public class AccountController implements Initializable {
                 e.printStackTrace();
             }
             Stage stage = (Stage)((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setTitle("MainView");
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
