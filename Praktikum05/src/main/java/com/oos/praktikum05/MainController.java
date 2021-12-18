@@ -119,13 +119,19 @@ public class MainController implements Initializable {
 
         viewAccount.setOnAction(event -> {
             stage = (Stage) root.getScene().getWindow();
+            
             try {
-                root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("account-view.fxml")));
+                FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("account-view.fxml")));
+                root = loader.load();
+
+                AccountController accountController = loader.getController();
+                accountController.setupData(globalBank, selectedAccount.toString().replace("[", "").replace("]", ""));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             scene = new Scene(root);
-            stage.setTitle("AccountView");
+            stage.setTitle(selectedAccount.toString());
             stage.setScene(scene);
             stage.show();
         });

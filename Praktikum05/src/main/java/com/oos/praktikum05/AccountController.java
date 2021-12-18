@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,10 +16,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class AccountController {
+public class AccountController implements Initializable {
 
     private final ObservableList<Transaction> transactionsList = FXCollections.observableArrayList();
     private PrivateBank bank;
@@ -289,6 +291,12 @@ public class AccountController {
         incoming.setOnAction(event -> setDialogAddTransaction(incoming, name));
         outgoing.setOnAction(event -> setDialogAddTransaction(outgoing, name));
 
+
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         backButton.setOnMouseClicked(mouseEvent -> {
             try {
                 root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main-view.fxml")));
@@ -300,6 +308,5 @@ public class AccountController {
             stage.setScene(scene);
             stage.show();
         });
-
     }
 }
