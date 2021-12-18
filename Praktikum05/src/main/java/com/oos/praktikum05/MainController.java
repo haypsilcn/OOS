@@ -119,7 +119,7 @@ public class MainController implements Initializable {
 
         viewAccount.setOnAction(event -> {
             stage = (Stage) root.getScene().getWindow();
-            
+
             try {
                 FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("account-view.fxml")));
                 root = loader.load();

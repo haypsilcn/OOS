@@ -285,7 +285,7 @@ public class AccountController implements Initializable {
         ascending.setOnAction(event -> updateListView(bank.getTransactionsSorted(name, true)));
         descending.setOnAction(event -> updateListView(bank.getTransactionsSorted(name, false)));
         positive.setOnAction(event -> updateListView(bank.getTransactionsByType(name, true)));
-        negative.setOnAction(event -> updateListView(bank.getTransactionsByType(name, true)));
+        negative.setOnAction(event -> updateListView(bank.getTransactionsByType(name, false)));
 
         payment.setOnAction(event -> setDialogAddTransaction(payment, name));
         incoming.setOnAction(event -> setDialogAddTransaction(incoming, name));
