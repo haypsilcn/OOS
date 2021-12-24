@@ -186,7 +186,7 @@ public class PrivateBankTest {
 
     @DisplayName("Get account balance")
     @ParameterizedTest
-    @Order(14)
+    @Order(13)
     @CsvSource({"Klaus, 0", "Tim, 80", "Hagen, 1006.32"})
     public void getAccountBalanceTest(String account, double balance) {
         System.out.println("Expected balance <" + balance + "> in account <" + account + ">");
@@ -194,7 +194,7 @@ public class PrivateBankTest {
     }
 
     @DisplayName("Get transactions list")
-    @Test  @Order(15)
+    @Test @Order(14)
     public void getTransactionTest() {
         List<Transaction> transactionList = List.of(
                 new Payment("19.01.2011", "Payment", -789, 0, 0.12),
@@ -204,7 +204,7 @@ public class PrivateBankTest {
     }
 
     @DisplayName("Get transactions list by type")
-    @Test @Order(16)
+    @Test @Order(15)
     public void getTransactionsByTypeTest() {
         List<Transaction> transactionList = List.of(
                 new OutgoingTransfer("30.07.2020", "OutgoingTransfer to Hagen", 1890, "Klaus", "Hagen"));
@@ -212,7 +212,7 @@ public class PrivateBankTest {
         System.out.println("getTransactionByTypeTest in <Klaus> is correct.");
     }
 
-    @Test @Order(17)
+    @Test @Order(16)
     @DisplayName("Get sorted transactions list")
     public void getTransactionsSortedTest() {
         assertEquals(List.of(
@@ -221,7 +221,7 @@ public class PrivateBankTest {
 
     }
 
-    @Test @Order(18)
+    @Test @Order(17)
     @DisplayName("Get a list of all accounts")
     public void getAllAccounts() {
         List<String> expected = new ArrayList<>();
@@ -239,7 +239,7 @@ public class PrivateBankTest {
 
     @ParameterizedTest
     @DisplayName("Delete a valid account")
-    @Order(19)
+    @Order(18)
     @ValueSource(strings = {"Bob", "Narsha", "Tim", "Hagen"})
     public void deleteValidAccount(String account) {
         assertDoesNotThrow(
@@ -249,7 +249,7 @@ public class PrivateBankTest {
 
     @ParameterizedTest
     @DisplayName("Delete an invalid account")
-    @Order(20)
+    @Order(19)
     @ValueSource(strings = {"Gina", "Natasha", "Steve"})
     public void deleteInvalidAccount(String account) {
         Exception e = assertThrows(AccountDoesNotExistException.class,
